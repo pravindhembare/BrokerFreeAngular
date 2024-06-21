@@ -1,0 +1,109 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<body>
+
+    <section class="page-title mt-4">
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <!-- Title text -->
+                    <h3>Reset Your Password</h3>
+                    <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                </div>
+            </div>
+        </div>
+        <!-- Container End -->
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="contact-us-content p-4">
+                       
+                        <h1 class="pt-3">Hello, Owner</h1>
+                        <p class="pt-3 pb-5">Please fill this form to set new Password!</p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="login">        
+                        <div class="container">
+                            <div id="login-row" class="row justify-content-center align-items-center">
+                                <div id="login-column" class="col-md-8">
+                                    <div id="login-box" class="col-md-12">                                        
+                                        <form [formGroup]="oforgotForm" (ngSubmit)="ownerforgot()">
+                                            <h3 class="text-center text-info">Forgot Password</h3>
+                                            <div class="form-group">
+                                                <label for="email" class="text-info">Email Id</label><br>
+                                                <input type="text" formControlName="oemail" id="oemail" class="form-control"  placeholder="abc@gmail.com" (input)="onEmailInput($event)"  required>
+                                                <div *ngIf="f['oemail'].errors && (f['oemail'].dirty || f['oemail'].touched)" class="text-danger small">
+                                                    <div *ngIf="f['oemail'].errors['required']">Email is required</div>
+                                                    <div *ngIf="f['oemail'].errors['pattern']">Invalid email format</div>  
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6 ">
+                                                        <label for="Security Question" class="text-info">Security Question</label><br>
+                                                        <select class="form-control" formControlName="opassreq" placeholder="Security Question *">
+                                                            <option value="" selected disabled>Select Question</option>
+                                                            <option value="1">Favourite food item.</option>
+                                                            <option value="2">Favourite Place</option>
+                                                            <option value="3">Primary school</option>
+                                                            <option value="4">Other</option>
+                                                        </select>
+                                                        <div *ngIf="f['opassreq'].invalid && (f['opassreq'].dirty || f['opassreq'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['opassreq'].errors?.['required']">Please select a security question</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label for="Security Answer" class="text-info">Security Answer</label><br>
+                                                        <input type="text" class="form-control" formControlName="opassans" placeholder="Pizza,Mahableshwar">
+                                                        <div *ngIf="f['opassans'].invalid && (f['opassans'].dirty || f['opassans'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['opassans'].errors?.['required']">Answer is required</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label for="Password" class="text-info">Password</label><br>
+                                                        <input type="password" class="form-control" formControlName="opassword" placeholder="Abc@1234">
+                                                        <div *ngIf="f['opassword'].invalid && (f['opassword'].dirty || f['opassword'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['opassword'].errors?.['required']">Password is required</div>
+                                                            <div *ngIf="f['opassword'].errors?.['pattern']">Password must contain at least 8 characters, including uppercase, lowercase, digit, and special character</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label for="Confirm Password" class="text-info">Confirm Password</label><br>
+                                                        <input type="password" class="form-control" formControlName="ocpassword" placeholder="Abc@1234">
+                                                        <div *ngIf="f['ocpassword'].invalid && (f['ocpassword'].dirty || f['ocpassword'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['ocpassword'].errors?.['required']">Confirm Password is required</div>
+                                                        </div>
+                                                        <div *ngIf="f['opassword'].value !== f['ocpassword'].value && (f['ocpassword'].dirty || f['ocpassword'].touched)" class="text-danger small">
+                                                            Passwords do not match
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">                                               
+                                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                            </div>
+                                            <div class="form-group" class="text-right">
+                                                <label class="form-check-label">You can <a routerLink="../owner-login1" style="color: blue; cursor: pointer;">Log in</a></label>
+                                            </div>                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </section>     
+</body>

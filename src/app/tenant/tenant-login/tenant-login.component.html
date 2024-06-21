@@ -1,0 +1,75 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<body>
+
+    <section class="page-title mt-4">
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <!-- Title text -->
+                    <h3>Log in an account</h3>
+                    <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                </div>
+            </div>
+        </div>
+        <!-- Container End -->
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="contact-us-content p-4">
+                       
+                        <h1 class="pt-3">Hello, Buyer/Tenant</h1>
+                        <p class="pt-3 pb-5">Please fill this form to create an account!</p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="login">        
+                        <div class="container">
+                            <div id="login-row" class="row justify-content-center align-items-center">
+                                <div id="login-column" class="col-md-8">
+                                    <div id="login-box" class="col-md-12">
+                                        
+                                        <form [formGroup]="loginForm" (ngSubmit)="tenantLogin()">
+                                            <h3 class="text-center text-info">Login</h3>
+                                            <div class="form-group">
+                                                <label for="email" class="text-info">Email Id</label><br>
+                                                <input type="text" formControlName="temail" id="temail" class="form-control" placeholder="abc@gmail.com" (input)="onEmailInput($event)" required>
+                                                <div *ngIf="f['temail'].errors && (f['temail'].dirty || f['temail'].touched)" class="text-danger small">
+                                                    <div *ngIf="f['temail'].errors['required']">Email is required</div>
+                                                    <div *ngIf="f['temail'].errors['pattern']">Invalid email format</div>  
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="text-info">Password:</label><br>
+                                                <input type="password" formControlName="tpassword" id="tpassword" class="form-control"  required>
+                                                <div *ngIf="f['tpassword'].errors && (f['tpassword'].dirty || f['tpassword'].touched)" class="text-danger small">
+                                                    <div *ngIf="f['tpassword'].errors['required']">Password is required</div>
+                                                    <div *ngIf="f['tpassword'].errors['pattern']">Password must contain at least 8 characters, including uppercase, lowercase, digit, and special character</div>
+                                                  </div>
+                                            </div>
+                                            <div class="form-group">                                               
+                                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Log in">
+                                            </div>
+                                            <div id="register-link" class="text-right">
+                                                <a routerLink="../tenant-forgot" class="text-info">Forgot Password</a>
+                                            </div>
+                                            <div id="register-link" class="text-right">
+                                                <label class="form-check-label">Don't have an account? <a routerLink="../tenant-register">Sign up</a></label>                                                
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </section>     
+</body>

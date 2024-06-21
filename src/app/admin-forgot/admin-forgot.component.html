@@ -1,0 +1,97 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<body>
+
+    <section class="page-title mt-4">
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <!-- Title text -->
+                    <h3>Reset Password</h3>
+                    <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                </div>
+            </div>
+        </div>
+        <!-- Container End -->
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="contact-us-content p-4">
+                        <img src="../../assets/images/a6.jpg" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="login">        
+                        <div class="container">
+                            <div id="login-row" class="row justify-content-center align-items-center">
+                                <div id="login-column" class="col-md-8">
+                                    <div id="login-box" class="col-md-12">                                        
+                                        <form [formGroup]="aforgotForm" (ngSubmit)="adminforgot()">
+                                            <h3 class="text-center text-info">Forgot Password</h3>
+                                            <div class="form-group">
+                                                
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6 ">
+                                                        <label for="email" class="text-info">Email Id</label><br>
+                                                        <input type="text" formControlName="aemail" id="aemail" class="form-control"  placeholder="abc@gmail.com" (input)="onEmailInput($event)"  required>
+                                                        <div *ngIf="f['aemail'].errors && (f['aemail'].dirty || f['aemail'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['aemail'].errors['required']">Email is required</div>
+                                                            <div *ngIf="f['aemail'].errors['pattern']">Invalid email format</div>  
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label for="Access Key" class="text-info">Access Key</label><br>
+                                                        <input type="text" class="form-control" formControlName="akey" placeholder="AKIAIOSFODNN7EXAMPLE">
+                                                        <div *ngIf="f['akey'].invalid && (f['akey'].dirty || f['akey'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['akey'].errors?.['required']">Access Key is required</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label for="Password" class="text-info">New Password</label><br>
+                                                        <input type="password" class="form-control" formControlName="apassword" placeholder="Abc@1234">
+                                                        <div *ngIf="f['apassword'].invalid && (f['apassword'].dirty || f['apassword'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['apassword'].errors?.['required']">Password is required</div>
+                                                            <div *ngIf="f['apassword'].errors?.['pattern']">Password must contain at least 8 characters, including uppercase, lowercase, digit, and special character</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label for="Confirm Password" class="text-info">Confirm Password</label><br>
+                                                        <input type="password" class="form-control" formControlName="acpassword" placeholder="Abc@1234">
+                                                        <div *ngIf="f['acpassword'].invalid && (f['acpassword'].dirty || f['acpassword'].touched)" class="text-danger small">
+                                                            <div *ngIf="f['acpassword'].errors?.['required']">Confirm Password is required</div>
+                                                        </div>
+                                                        <div *ngIf="f['apassword'].value !== f['acpassword'].value && (f['acpassword'].dirty || f['acpassword'].touched)" class="text-danger small">
+                                                            Passwords do not match
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">                                               
+                                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                            </div>
+                                            <div class="form-group" class="text-right">
+                                                <label class="form-check-label">You can <a routerLink="../admin-login" style="color: blue; cursor: pointer;">Log in</a></label>
+                                            </div>                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </section>     
+</body>

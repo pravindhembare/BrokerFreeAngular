@@ -1,0 +1,43 @@
+
+
+ <h3 style="text-align:center"> Registered Tenant Details </h3>
+ <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+	
+ <br>
+ <br>
+   <div class="center">
+     <table style="text-align:center" class="table table-striped">
+     <thead>
+  
+      <tr>
+        <th>Teanant Id</th>
+        
+        
+        <th> Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Contact Number</th>
+        </tr>
+    </thead>
+    
+    
+    <tbody style="text-align:center">
+        <tr *ngFor="let Tenant of tenant">
+            <td>{{Tenant. tid}}</td>
+          
+            
+            <td>{{Tenant.tname}}</td>
+            <td>{{Tenant.temail}}</td>
+            <td>{{Tenant.tpassword}}</td>
+            <td>{{Tenant.tcontact}}</td>
+          <!--<td><button class="btn btn-danger" (click)=""> Delete Owner</button></td>-->
+          <td><button class="btn btn-danger"  > Delete Tenant</button></td>
+      
+        </tr>
+    </tbody>
+    </table>
+    </div>
+    <div class="container">
+      <span class="text-muted">All Rights Reserved 2024 @BrokerFree</span>
+  </div>
+

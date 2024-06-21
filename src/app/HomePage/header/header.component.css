@@ -1,0 +1,21 @@
+
+.navbar-brand.brand-text {
+    font-size: 1.5rem; /* Increase font size */
+    font-weight: bold;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1rem; /* Add padding to the navigation links */
+  }
+  
+  .navbar-toggler {
+    border-color: #fff; /* Change color of the toggler icon */
+  }
+  
+  .navbar-toggler-icon {
+    background-color: #fff; /* Change background color of the toggler icon */
+  } 
+  
+  @import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css)
+  
+  

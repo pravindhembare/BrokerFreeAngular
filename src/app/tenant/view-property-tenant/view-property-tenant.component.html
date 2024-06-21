@@ -1,0 +1,48 @@
+
+
+
+
+
+<div class = "container">
+  <br>
+  <h2 style="text-align:center">Property Details</h2>
+  <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+		
+
+
+  <div class = "row col-lg-12 col-sm-12">
+      <table class = "table table-striped">
+          <thead>
+              <tr>
+                <th>Area</th>
+                <th>Type</th>
+                <th>Building Name</th>
+                <th>Parking</th>
+                <th>Deposit</th>
+                <th>Rent</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let property of property">
+            <td>{{ property.area }}</td>
+            <td>{{ property. pdtype }}</td>
+            <td>{{ property.buildname }}</td>
+            <td>{{ property.pdparking }}</td>
+            <td>{{ property.deposit }}</td>
+            <td>{{ property.prent }}</td>
+             <!--<td><button class = "btn btn-danger" (click) = "wishlist(property.pid)">Add To Wishlist</button></td>--> 
+             
+            </tr>
+          </tbody>
+      </table>
+  </div>
+</div>
+
+<br>
+
+<br>
+
+<br>
+<div class="container">
+  <span class="text-muted">All Rights Reserved 2024 @BrokerFree</span>
+</div>

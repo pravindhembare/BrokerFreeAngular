@@ -1,0 +1,1726 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<body>
+  <section class="section">
+    <div class="">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="contact-us-content">
+            <div class="sidebar">
+
+              <img [src]="(this.imageUrl !== 'null' && this.imageUrl !== null) ? imageUrl : 'https://clipart-library.com/images_k/man-silhouette-profile/man-silhouette-profile-16.png'" 
+              alt="Selected Image" 
+              style="width: 125px; height: 125px; margin-top: 20px;"
+              class="profile-image">                        
+              <p class="user">{{ this.userName }}</p>
+
+
+              <ul class="nav flex-column">
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(1)" value="1"
+                    >User Profile</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(2)"
+                    >Search New Property</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(3)"
+                    >Manage Cart Property</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(4)"
+                    >Tenant Services Hub</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(5)">Notification Center</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(6)"
+                    >Messaging Inbox</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" (click)="logout()">Logout and Exit</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+       
+        <div class="col-md-1 mt-3" *ngIf="option ==2"></div>
+
+        <div class="col-md-10 scrollable-div" *ngIf="option == 1" [ngClass]="{'overflow-auto': isScrollable}">
+
+            <div class="row" style="margin-top: 50px;">
+            <img class="profile-image" [src]="(this.imageUrl !== 'null' && this.imageUrl !== null) ? this.imageUrl : 'https://clipart-library.com/images_k/man-silhouette-profile/man-silhouette-profile-16.png'" alt="Selected Image" style="width: 150px; height: 150px; margin-left: 30px; border: 1px solid #dddddd; ">
+            <div>
+            <h6 style="margin-left: 20px; margin-top:10px">ID: {{this.id}} </h6>
+            <h4 style="margin-top: 10px;margin-left: 20px; ">{{this.userName}}</h4> 
+            <h6 style="margin-left: 20px; margin-top:10px; margin-bottom:15px"> {{this.contact}} &nbsp; {{this.address}}</h6>              
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openInnerSection(11)"><i class="fa fa-lock" aria-hidden="true"></i> CHANGE PASSWORD</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openInnerSection(12)"><i class="fa fa-pencil-square" aria-hidden="true"></i> UPDATE PROFILE</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="deleteAccount()"><i class="fa fa-trash" aria-hidden="true"></i> DELETE PROFILE</span>                
+            </div>
+          </div>
+
+          <form [formGroup]="updationForm" (ngSubmit)="updateTenantProfile()" *ngIf="inneroption==12">
+            <fieldset class="p-4">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-2 py-2"></div>
+                  <div class="col-lg-4 py-2">
+                    <input
+                      type="text"
+                      class="form-control bottom-border"
+                      formControlName="oname"
+                      placeholder="Name *"
+                    />
+                    <div
+                      *ngIf="
+                        f['oname'].invalid &&
+                        (f['oname'].dirty || f['oname'].touched)
+                      "
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f['oname'].errors?.['required']">
+                        Name is required
+                      </div>
+                      <div *ngIf="f['oname'].errors?.['pattern']">
+                        Invalid name format
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 pt-2"> 
+                    <input type="file" class="form-control bottom-border" formControlName="oprofile" placeholder="Profile Image" id="imageUpload" (change)="handleProfileImage($event)" accept="image/*" multiple>                                   
+                </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-2 py-2"></div>
+                  <div class="col-lg-4 py-2">
+                    <input
+                      type="text"
+                      class="form-control bottom-border"
+                      formControlName="ocontact"
+                      placeholder="Contact *"
+                    />
+                    <div
+                      *ngIf="
+                        f['ocontact'].invalid &&
+                        (f['ocontact'].dirty || f['ocontact'].touched)
+                      "
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f['ocontact'].errors?.['required']">
+                        Contact is required
+                      </div>
+                      <div *ngIf="f['ocontact'].errors?.['pattern']">
+                        Invalid contact format (Should be 10 digits)
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 pt-2">
+                    <input
+                      type="text"
+                      class="form-control bottom-border"
+                      formControlName="oaddress"
+                      placeholder="Address *"
+                    />
+                    <div
+                      *ngIf="
+                        f['oaddress'].invalid &&
+                        (f['oaddress'].dirty || f['oaddress'].touched)
+                      "
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f['oaddress'].errors?.['required']">
+                        Address is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-2 py-2"></div>
+                  <div class="col-lg-4 py-2">
+                    <select
+                      class="form-control bottom-border"
+                      formControlName="opassreq"
+                      placeholder="Security Question *"
+                    >
+                      <option value="" selected disabled>
+                        Select Question
+                      </option>
+                      <option value="1">Favourite food item.</option>
+                      <option value="2">Favourite Place</option>
+                      <option value="3">Primary school</option>
+                      <option value="4">Other</option>
+                    </select>
+                    <div
+                      *ngIf="
+                        f['opassreq'].invalid &&
+                        (f['opassreq'].dirty || f['opassreq'].touched)
+                      "
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f['opassreq'].errors?.['required']">
+                        Please select a security question
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 pt-2">
+                    <input
+                      type="text"
+                      class="form-control bottom-border"
+                      formControlName="opassans"
+                      placeholder="Answer *"
+                    />
+                    <div
+                      *ngIf="
+                        f['opassans'].invalid &&
+                        (f['opassans'].dirty || f['opassans'].touched)
+                      "
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f['opassans'].errors?.['required']">
+                        Answer is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                                <div class="row">
+                                <div class="col-lg-9 py-2"></div>
+                                <div class="col-lg-2 pt-2">
+                                <button type="submit" class="btn table-design ">Update Profile</button>
+                                </div>
+                            </div>
+              </div>
+            </fieldset>
+          </form>
+
+          <form
+          [formGroup]="passwordChangeForm"
+          (ngSubmit)="changeTenantPassword()"
+          *ngIf="inneroption==11">
+          <fieldset class="p-4">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-2 py-2"></div>
+                <div class="col-lg-4 py-2">
+                  <input
+                    type="password"
+                    class="form-control bottom-border"
+                    formControlName="opassword"
+                    placeholder="Password *"
+                  />
+                  <div
+                    *ngIf="
+                      j['opassword'].invalid &&
+                      (j['opassword'].dirty || j['opassword'].touched)
+                    "
+                    class="text-danger small"
+                  >
+                    <div *ngIf="j['opassword'].errors?.['required']">
+                      Password is required
+                    </div>
+                    <div *ngIf="j['opassword'].errors?.['pattern']">
+                      Password must contain at least 8 characters, including
+                      uppercase, lowercase, digit, and special character
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 pt-2">
+                  <input
+                    type="password"
+                    class="form-control bottom-border"
+                    formControlName="ocpassword"
+                    placeholder="Confirm Password *        Abc@1234"
+                  />
+                  <div
+                    *ngIf="
+                      j['ocpassword'].invalid &&
+                      (j['ocpassword'].dirty || j['ocpassword'].touched)
+                    "
+                    class="text-danger small"
+                  >
+                    <div *ngIf="j['ocpassword'].errors?.['required']">
+                      Confirm Password is required
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      j['opassword'].value !== j['ocpassword'].value &&
+                      (j['ocpassword'].dirty || j['ocpassword'].touched)
+                    "
+                    class="text-danger small"
+                  >
+                    Passwords do not match
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                  <div class="col-lg-9 py-2"></div>
+                  <div class="col-lg-2 pt-2">
+              <button type="submit" class="btn table-design">Change Password</button>
+              </div>
+              </div>
+          </div>
+          </fieldset>
+        </form>
+
+           
+        </div>
+
+
+        <!-- // This is Search Property Section -->
+        <div class="col-md-8 mt-3 scrollable-div" *ngIf="option == 2" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="container">
+            <form #propertyForm="ngForm" (ngSubmit)="submitForm(propertyForm)">
+
+              <!-- for city and subtype -->
+              <div class="form-group">
+                <h6 style="margin-top: 15px;"><label for="city">Search localities or landmark *</label></h6>
+
+                <div class="row">
+                  <div class="col-lg-6 py-2">
+                    <select
+                      class="form-control"
+                      id="city"
+                      name="city"
+                      [(ngModel)]="city"
+                    >
+
+                    <ng-container *ngFor="let feature of featuresData">
+                      <option [value]="feature.city">Property in {{ feature.city }}</option>
+                    </ng-container>
+                   
+                      <!-- <option value="Pune" selected>Property in Pune</option>
+                      <option value="Delhi/NCR">Property in Delhi/NCR</option>
+                      <option value="Mumbai">Property in Mumbai</option>
+                      <option value="Bangalore">Property in Bangalore</option>
+                      <option value="Hyderabad">Property in Hyderabad</option>
+                      <option value="Kolkata">Property in Kolkata</option>
+                      <option value="Chennai">Property in Chennai</option>
+                      <option value="Ahmedabad">Property in Ahmedabad</option>
+                      <option value="Other">Other</option> -->
+                    </select>
+                  </div>
+
+                  <div class="col-lg-6 pt-1">
+                    <div
+                      class="btn-group btn-group-toggle mt-1"
+                      data-toggle="buttons"
+                    >
+                      <label
+                        class="btn btn-secondary mr-2"
+                        [class.active]="subType === 'Sell'"
+                        [ngStyle]="{
+                          'background-color':
+                            subType === 'Sell' ? '#000000' : ''
+                        }"
+                      >
+                        <input
+                          type="radio"
+                          name="options"
+                          id="option1"
+                          autocomplete="off"
+                          (click)="selectLookingOption('Sell')"
+                        />
+                        Sell
+                      </label>
+                      <label
+                        class="btn btn-secondary mr-2"
+                        [class.active]="subType === 'Rent/Lease'"
+                        [ngStyle]="{
+                          'background-color':
+                            subType === 'Rent/Lease' ? '#000000' : ''
+                        }"
+                      >
+                        <input
+                          type="radio"
+                          name="options"
+                          id="option2"
+                          autocomplete="off"
+                          (click)="selectLookingOption('Rent/Lease')"
+                        />
+                        Rent/Lease
+                      </label>
+                      <label
+                        class="btn btn-secondary"
+                        [class.active]="subType === 'PG'"
+                        [ngStyle]="{
+                          'background-color': subType === 'PG' ? '#000000' : ''
+                        }"
+                      >
+                        <input
+                          type="radio"
+                          name="options"
+                          id="option3"
+                          autocomplete="off"
+                          (click)="selectLookingOption('PG')"
+                        />
+                        PG
+                      </label>
+                    </div>
+                  </div>
+                </div>                
+              </div>
+
+              <!-- for specification and type -->
+              <div class="form-group">
+                <div class="row">
+
+                  <div class="col-lg-4">
+                     <div class="btn-group btn-group-toggle mt-1" data-toggle="buttons"  *ngIf="subType != 'PG'&& subType === 'Rent/Lease' || subType === 'Sell' ">
+                      <label class="btn btn-secondary mr-2" [class.active]="specification === 'residential'">
+                      <input type="radio" name="propertyType" (click)="selectPropertyType('residential')" autocomplete="off"> Residential
+                      </label>
+                      <label class="btn btn-secondary" [class.active]="specification === 'commercial'">
+                      <input type="radio" name="propertyType" (click)="selectPropertyType('commercial')" autocomplete="off"> Commercial
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-8">
+                        <div *ngIf="specification === 'residential' && subType != 'PG'" class="mt-1">                      
+                          <div class="btn-group-toggle" data-toggle="buttons">
+                              <div class="btn-group d-flex flex-wrap">
+                                  <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Flat/Apartment'">
+                                      <input type="radio" name="residentialType" (click)="selectProperty('Flat/Apartment')"> Flat
+                                  </label>                                 
+                              <!-- </div>
+                              <div class="btn-group d-flex flex-wrap">                                 -->
+                                  <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === '1RK Studio Apartment'">
+                                      <input type="radio" name="residentialType" (click)="selectProperty('1RK Studio Apartment')"> 1RK
+                                  </label>
+                                  <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === '2RK Studio Apartment'">
+                                      <input type="radio" name="residentialType" (click)="selectProperty('2RK Studio Apartment')"> 2RK
+                                  </label>
+                              <!-- </div>
+                              <div class="btn-group d-flex flex-wrap"> -->
+                                  <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Independent/Builder Floor'">
+                                      <input type="radio" name="residentialType" (click)="selectProperty('Independent/Builder Floor')"> Builder Floor
+                                  </label>
+                                  <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Independent House/Villa'">
+                                    <input type="radio" name="residentialType" (click)="selectProperty('Independent House/Villa')"> Independent House
+                                </label>
+                              </div>
+                          </div>
+                        </div>
+                                  
+                        <div *ngIf="specification === 'commercial' && subType != 'PG'" class="mt-1">                           
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <div class="btn-group d-flex flex-wrap">
+                                    <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Office'">
+                                        <input type="radio" name="commercialType" (click)="selectProperty('Office')"> Office
+                                    </label>
+                                    <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Retail'">
+                                        <input type="radio" name="commercialType" (click)="selectProperty('Retail')"> Retail
+                                    </label>
+                                <!-- </div>
+                                <div class="btn-group d-flex flex-wrap"> -->
+                                    <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Warehouses'">
+                                        <input type="radio" name="commercialType" (click)="selectProperty('Warehouses')"> Warehouses
+                                    </label>
+                                    <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Restaurants'">
+                                        <input type="radio" name="commercialType" (click)="selectProperty('Restaurants')"> Restaurants
+                                    </label>
+                                    <!-- </div>
+                                    <div class="btn-group d-flex flex-wrap"> -->
+                                    <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Other'">
+                                        <input type="radio" name="commercialType" (click)="selectProperty('Other')"> Other
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- <hr class="w-5 mt-0 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/> -->
+
+               <!-- for expected rent and deposit  -->
+               <div class="form-group">
+                <div class="row">
+
+                  <div class="col-lg-6">
+                    <input
+                    type="number"
+                    class="form-control"
+                    id="expectedRent"
+                    name="expectedRent"
+                    placeholder="Expected Rent/Price up to"
+                    [(ngModel)]="expectedRent"/>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <input
+                    type="number"
+                    class="form-control"
+                    id="expectedDeposit"
+                    name="expectedDeposit"
+                    placeholder="Expected Deposit/Advance up to"
+                    [(ngModel)]="expectedDeposit"/>
+                  </div>
+                        
+                </div>
+                <div class="mt-3 ml-3">
+                  <label *ngIf="subType !== 'Sell'">
+                      <input type="checkbox" (change)="updateElectricWaterExcluded($event)" [checked]="electricWaterExcluded === 'Yes'">
+                      Electric and Water Charges Excluded
+                  </label>
+                  <label>
+                      <input style="margin-left: 20px;" type="checkbox" (change)="updatePriceNegotiable($event)" [checked]="priceNegotiable === 'Yes'">
+                      Price Negotiable
+                  </label>
+              </div>
+              </div>
+              
+              <hr class="w-5 mt-0 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/>
+
+              <!-- for avalability data, willing to and parking -->
+              <div class="form-group extra_margin">
+                <div class="row">
+
+                  <div class="col-lg-4">
+                    <p for="availableFromDate">Available Date From</p>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="availableFromDate"
+                      name="availableFromDate"
+                      [(ngModel)]="availableFromDate"/>
+                  </div>
+
+                  <div class="col-lg-5">
+                    <p for="availableFromDate">Willing to</p>
+                   <div class="input-group"> 
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="willing" id="willing1" value="Bachloer" [(ngModel)]="willing">
+                      <label class="form-check-label circle-label1" for="willing1">Bachloer</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="willing" id="willing2" value="Family" [(ngModel)]="willing">
+                      <label class="form-check-label circle-label1" for="willing2">Family</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="willing" id="willing3" value="Any" [(ngModel)]="willing">
+                      <label class="form-check-label circle-label1" for="willing3">Any</label>
+                    </div>
+                  </div>
+                  </div>
+
+                  <div class="col-lg-3">
+                    <p for="availableFromDate">Parking</p>
+                   <div class="input-group">                    
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="parking1" value="Yes" [(ngModel)]="parking">
+                        <label class="form-check-label circle-label1" for="parking1">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="parking2" value="No" [(ngModel)]="parking">
+                        <label class="form-check-label circle-label1" for="parking2">No</label>
+                    </div>                
+                   </div>
+                  </div> 
+
+                </div>
+              </div>              
+
+              <!-- <hr class="w-5 mt-1 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/> -->
+              <!-- for property and and furnishing -->
+              <div class="form-group extra_margin">
+                <div class="row">
+
+                  <div class="col-lg-7">
+                    <p>Property age</p> 
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge1" value="0-1 year" [(ngModel)]="propertyAge">
+                        <label class="form-check-label circle-label1" for="propertyAge1">0-1 year</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge2" value="1-5 year" [(ngModel)]="propertyAge">
+                        <label class="form-check-label circle-label1" for="propertyAge2">1-5 year</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge3" value="5-10 year" [(ngModel)]="propertyAge">
+                        <label class="form-check-label circle-label1" for="propertyAge3">5-10 year</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge4" value="10+ year" [(ngModel)]="propertyAge">
+                        <label class="form-check-label circle-label1" for="propertyAge4">10+ year</label>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-5">
+                    <p>Furnishing</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="furnishing" id="furnishing1" value="Furnished" [(ngModel)]="furnishing">
+                        <label class="form-check-label circle-label1" for="furnishing1">Furnished</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="furnishing" id="furnishing2" value="Semi-furnished" [(ngModel)]="furnishing">
+                        <label class="form-check-label circle-label1" for="furnishing2">Semi</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="furnishing" id="furnishing3" value="Un-furnished" [(ngModel)]="furnishing">
+                        <label class="form-check-label circle-label1" for="furnishing3">Unfurnished</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+                          
+             <!-- for bathroom, bedroom and balcony -->
+             <div class="form-group extra_margin">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <p>No. of Bedrooms/Restrooms</p>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bedrooms" id="bedroom5" value="0" [(ngModel)]="bedrooms">
+                      <label class="form-check-label circle-label" for="bedroom5">0</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bedrooms" id="bedroom1" value="1" [(ngModel)]="bedrooms">
+                      <label class="form-check-label circle-label" for="bedroom1">1</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bedrooms" id="bedroom2" value="2" [(ngModel)]="bedrooms">
+                      <label class="form-check-label circle-label" for="bedroom2">2</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bedrooms" id="bedroom3" value="3" [(ngModel)]="bedrooms">
+                      <label class="form-check-label circle-label" for="bedroom3">3</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bedrooms" id="bedroom4" value="3+" [(ngModel)]="bedrooms">
+                      <label class="form-check-label circle-label" for="bedroom4">3+</label>
+                  </div>                  
+                </div>
+
+                <div class="col-lg-4">
+                  <p>No. of Bathrooms</p>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bathrooms" id="bathroom5" value="0" [(ngModel)]="bathrooms">
+                      <label class="form-check-label circle-label" for="bathroom5">0</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bathrooms" id="bathroom1" value="1" [(ngModel)]="bathrooms">
+                      <label class="form-check-label circle-label" for="bathroom1">1</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bathrooms" id="bathroom2" value="2" [(ngModel)]="bathrooms">
+                      <label class="form-check-label circle-label" for="bathroom2">2</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bathrooms" id="bathroom3" value="3" [(ngModel)]="bathrooms">
+                      <label class="form-check-label circle-label" for="bathroom3">3</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="bathrooms" id="bathroom4" value="3+" [(ngModel)]="bathrooms">
+                      <label class="form-check-label circle-label" for="bathroom4">3+</label>
+                  </div>                       
+                </div>
+
+                <div class="col-lg-4">
+                  <p>No. of Balconies</p>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="balconies" id="balconie1" value="0" [(ngModel)]="balconies">
+                      <label class="form-check-label circle-label" for="balconie1">0</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="balconies" id="balconie2" value="1" [(ngModel)]="balconies">
+                      <label class="form-check-label circle-label" for="balconie2">1</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="balconies" id="balconie3" value="2" [(ngModel)]="balconies">
+                      <label class="form-check-label circle-label" for="balconie3">2</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="balconies" id="balconie4" value="3" [(ngModel)]="balconies">
+                      <label class="form-check-label circle-label" for="balconie4">3</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="balconies" id="balconie5" value="3+" [(ngModel)]="balconies">
+                      <label class="form-check-label circle-label" for="balconie5">3+</label>
+                  </div>                  
+                </div>
+
+              </div>
+             </div>
+
+             <hr class="w-5 mt-4 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/>
+            <!-- for submit and cleae button -->
+            <div class="form-group extra_margin">
+              <div class="row">
+
+                <div class="col-lg-8">                   
+                </div>
+                <div class="col-lg-4" >
+                  <button type="button"class="btn btn-secondary"(click)="clearForm()"> Clear Form </button> &nbsp;&nbsp;
+                  <button type="submit" class="btn btn-primary">Search Property</button>
+                </div>                
+              </div>
+            </div>                            
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-10 scrollable-div" *ngIf="option == 21" [ngClass]="{'overflow-auto': isScrollable}">
+          <section *ngIf="option == 21">
+            <br>
+            <h6><a  class="link" (click)="openSection(2)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>
+            <div class="row">
+              <ng-container
+                *ngFor="let property of propertiesdata; let i = index"
+              >
+                <div class="col-lg-6 col-sm-6">
+                  <a (click)="selectPropertyId(property, 22, 21)">
+                  <div
+                    class="card-body bg-gray text-center"
+                    style="cursor: pointer"
+                  >
+                    <table class="table table-design">
+                      <tbody>
+                        <tr>
+                          <td colspan="3">
+                            <h5 class="card-title mt-3 change_color">
+                              {{ property.propertyName }}
+                            </h5>
+                            <p>
+                              {{ property.subLocality }} &nbsp;
+                              {{ property.city }} &nbsp;
+                              <a
+                                class="change_color"
+                                href="{{ property.locality }}"
+                                style="text-decoration: none"
+                                ><i
+                                  class="fa fa-map-marker"
+                                  aria-hidden="true"
+                                ></i
+                                >&nbsp; Explore Nearby</a
+                              >
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expectedRent }} </b><br />
+                            <p
+                              style="font-size: smaller"
+                              *ngIf="
+                                property.priceNegotiable === 'Yes';
+                                else elseBlock
+                              "
+                            >
+                              {{ property.subType }} (Negotiable)
+                            </p>
+                            <ng-template #elseBlock
+                              ><p style="font-size: smaller">
+                                {{ property.subType }} (Non-Negotiable)
+                              </p></ng-template
+                            >
+                          </td>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expecteddeposit }}</b> <br />
+                            <p style="font-size: smaller">Deposit</p>
+                          </td>
+                          <td>
+                            <b
+                              ><i
+                                class="fa fa-area-chart"
+                                aria-hidden="true"
+                              ></i>
+                              {{ property.carpetArea }}
+                            </b>
+                            <br />
+                            <p style="font-size: smaller">
+                              {{ property.areaType }}
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <img
+                              [src]="property.photo1"
+                              (error)="setDefaultImage($event)"
+                              class="img-fluid w-100 rounded fixed-size-image"
+                              alt=""
+                            />
+                          </td>
+                          <td>
+                            <table style="margin: 0px; padding: 0px">
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bed" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: smaller">
+                                      {{ property.furnishing }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-home" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      &nbsp;{{ property.type }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-users" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.willingType }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-key" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.availabilityDate }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr style="margin: 0px; padding: 0px">
+                          <td
+                            colspan="3"
+                            style="
+                              margin: 0px;
+                              padding: 0px;
+                              text-align: center;
+                            "
+                          >
+                            <p style="background-color: #f88d8d; color: white">
+                              <a (click)="selectOwnerByPropertyId(23 , 21 , property)"><b class="change_colors" style="text-align: left"
+                                >Get Owner Details</b></a>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <a (click)="addToCart(property)">
+                              <b class="change_colors"> Add to Cart</b>
+                              <b style="font-size: xx-large; text-align: right"
+                                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i                                  
+                                  class="fa fa-heart-o" 
+                                  aria-hidden="true"
+                                ></i
+                              ></b></a>
+                            </p>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                    <hr
+                      class="w-100 mt-3"
+                      style="border-top: 2px solid #ff8c00; border-radius: 100%"
+                    />
+                  </div>
+                </a>
+                </div>
+                <ng-container
+                  *ngIf="(i + 1) % 4 === 0 || i === propertiesdata.length - 1"
+                >
+                  <div class="row"></div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </section>
+        </div>
+
+        <div class=" col-md-10 scrollable-div" [ngClass]="{'overflow-auto': isScrollable}"  *ngIf="option == 22">
+          <br>
+          <h6><a  class="link" (click)="openSection(this.secondBackOption)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>                      
+          <div class="row">
+          <ng-container>                
+                <div class="col-lg-8 col-sm-6">
+                  <div
+                    class="card-body bg-gray text-center"
+                    style="cursor: pointer"
+                  >
+                    <table class="table table-design">
+                      <tbody>
+                        <tr>
+                          <td colspan="3">
+                            <h5 class="card-title mt-3 change_color">
+                              {{ apartment }} 
+                            </h5>
+                          <b>
+                              <p style="font-size: small">
+                                {{houseNo}} &nbsp; {{specification}} &nbsp;{{ type }}
+                              </p></b> 
+                            <p>
+                              {{ locality }} &nbsp;
+                              {{ city }} &nbsp;
+                              <a
+                                class="change_color"
+                                href="{{ location }}"
+                                style="text-decoration: none"
+                                ><i
+                                  class="fa fa-map-marker"
+                                  aria-hidden="true"
+                                ></i
+                                >&nbsp; Explore Nearby</a
+                              >
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>
+                            <b> ₹&nbsp;{{ expectedRent }} </b><br />
+                            <p
+                              style="font-size: smaller"
+                              *ngIf="
+                                priceNegotiable === 'Yes';
+                                else elseBlock
+                              "
+                            >
+                              {{ subType }} (Negotiable)
+                            </p>
+                            <ng-template #elseBlock
+                              ><p style="font-size: smaller">
+                                {{ subType }} (Non-Negotiable)
+                              </p></ng-template
+                            >
+                          </td>
+                          <td>
+                            <b> ₹&nbsp;{{ expectedDeposit }}</b> <br />
+                            <p style="font-size: smaller">Deposit</p>
+                          </td>
+                          <td>
+                            <b
+                              ><i
+                                class="fa fa-area-chart"
+                                aria-hidden="true"
+                              ></i>
+                              {{ carpetArea }}
+                            </b>
+                            <br />
+                            <p style="font-size: smaller">
+                              {{ areaType }}
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>                          
+                          <td colspan="3">
+                            <table style="margin: 0px; padding: 0px; width: 100%;">
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">                                  
+                                  <i class="fa fa-archive" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: smaller">
+                                      {{ furnishing }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bed" aria-hidden="true"></i>
+                                  <!-- <i class="fa fa-home" aria-hidden="true"></i> -->
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ bedrooms }} Bedrooms
+                                    </p></b>                                  
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bath" aria-hidden="true"></i>                                  
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ bathrooms }} Bathrooms
+                                    </p></b>                                  
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-building" aria-hidden="true"></i>                                  
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ balconies }} Balconies
+                                    </p></b>                                  
+                                </td>
+                              </tr>
+                              <tr style="margin: 0px; padding: 0px">
+
+                                <td style="margin: 0px; padding: 0px">
+                                 <i class="fa fa-building-o" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ selectedFloor }} / {{totalFloors}} No. Floor
+                                    </p></b
+                                  >
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ propertyAge }} Old
+                                    </p></b
+                                  >
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-users" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ willing }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-key" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ availableFromDate }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+
+                              <tr style="margin: 0px; padding: 0px">                                
+                                <td colspan="4" style="margin-top: 10px; padding-top: 20px">
+                                  
+                                  <a style="font-size: larger;" (click)="updateImageCount('previous')"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>
+                                      &nbsp;&nbsp;&nbsp;<img
+                                      [src]="selectedImages[imageNumber]"
+                                      (error)="setDefaultImage($event)" />
+                                      &nbsp;&nbsp;&nbsp;<a style="font-size: larger;" (click)="updateImageCount('next')"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+                                </td>                                
+                              </tr>
+
+                              <tr *ngIf="agreementDuration !== null && agreementDuration !== '' "   style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Agreement Duration = {{ agreementDuration }} 
+                                  </p></b>
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Notive Period = {{ noticeMonths }} 
+                                  </p></b>
+                                </td>                               
+                              </tr>                              
+
+                              <tr style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Electric & Water Charge Include  = {{ electricWaterExcluded }} 
+                                  </p></b>
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Parking Available  = {{ parking }} 
+                                  </p></b>
+                                </td>                               
+                              </tr>
+
+                              <tr *ngIf="otherRooms !== null && otherRooms !== '' " style="margin: 0px; padding: 0px">
+                                <td colspan="4" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Extra Roomes = {{ otherRooms }} 
+                                  </p></b>
+                                </td>                                                             
+                              </tr>
+
+                              <tr *ngIf="description !== null && description !== '' " style="margin: 0px; padding: 0px">
+                                <td colspan="4" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    {{ description }} 
+                                  </p></b>
+                                </td>                                                             
+                              </tr>
+
+                              <tr style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+
+                                </td>                               
+                              </tr>
+                            </table>
+                          </td>
+
+                        </tr>
+                        <tr style="margin: 0px; padding: 0px">
+                          <td
+                            colspan="3"
+                            style="
+                              margin: 0px;
+                              padding: 0px;
+                              text-align: center;
+                            "
+                          >                            
+                          </td>
+                        </tr>
+                        <tr style="margin: 0px; padding: 0px">
+                          <td colspan="4"style="margin: 0px;padding: 0px;text-align: center;">
+                            <a (click)="selectOwnerByPropertyId(23 , 22)">
+                            <p style="background-color: #f88d8d; color: white">
+                              <b class="change_colors" style="text-align: left">
+                                Contact to Owner</b>
+                            </p></a>
+                          </td>
+                          </tr>
+
+                      </tfoot>
+                    </table>
+                    <hr
+                      class="w-100 mt-3"
+                      style="border-top: 2px solid #ff8c00; border-radius: 100%"
+                    />
+                  </div>
+                </div> 
+                
+                <div class="col-lg-4 col-sm-6">
+                  <h2>Property Reviews</h2>
+                  
+                  <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}"> 
+                  <ng-container *ngFor="let review of reviewData; let i = index">                    
+                    <table>
+                      <tbody>
+                        <tr class=" table table-design">
+                          <td style=" padding-left:10px;">                            
+                            <p>
+                              <a style="cursor: pointer;" (click)="selectReviewerTenant(review.email,23,22)"> {{review.email}} </a> &nbsp;&nbsp;{{ review.date }} &nbsp;&nbsp;
+                              <a style="cursor: pointer;" (click)="deleteReview(review.rid)"><i *ngIf="currentUser === review.email " class="fa fa-trash-o change_color " aria-hidden="true"></i></a>
+                              <br/>  {{review.review}}                                                    
+                            </p>
+                          </td>
+                        </tr>                       
+                      </tbody>                      
+                    </table>                                         
+                </ng-container>            
+                    </div>     
+
+                 
+
+                   <div class="review-box">
+                    <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="reviewMsg" placeholder="Add Your Review">
+                    <a (click)="addReview(this.reviewMsg)">
+                      <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                        <b class="change_colors" style="text-align: left">
+                          Add Review</b>
+                      </p></a>
+                    <hr
+                    class="w-100 mt-3"
+                    style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                  />
+                  </div>
+                </div>                              
+              </ng-container>
+            </div>
+        </div>
+
+        <div class="col-md-10 scrollable-div" *ngIf="option == 23" [ngClass]="{'overflow-auto': isScrollable}">
+          <br>
+          <h6><a  class="link" (click)="openSection(backOptionNumber)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>            
+          
+          <div *ngIf="SelectedOwner.oid != 0">
+              
+            <div class="row">
+              <ng-container> 
+                 
+                  <!-- tenant details -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Details of {{this.SelectedOwner.oname}}</h5>
+                      <table  class="inner-scrollable-div " [ngClass]="{'overflow-auto': isScrollable}" >
+                          <tr style="text-align:center">
+                              <td>
+                                  <img [src]="this.SelectedOwner.photo!==null  ? this.SelectedOwner.photo : '../../../assets/images/profile.png'"                                            
+                                  style="width: 125px; height: 125px; margin-top: 20px;"
+                                  class="profile-image">
+                                   </td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px; margin-top: 20px;">
+                              <td><h5> Name : &nbsp;&nbsp;{{this.SelectedOwner.oname}}</h5></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td><h6> Email : &nbsp;&nbsp;{{this.SelectedOwner.oemail}}</h6></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td> <h6>Contact No. : &nbsp;&nbsp;{{this.SelectedOwner.ocontact}}</h6></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td><h6>Address : &nbsp;&nbsp;{{this.SelectedOwner.oaddress}}</h6></td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <!-- report details -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Report Against {{this.SelectedOwner.oname}}</h5>                                           
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                      <table style="width:100%">
+                          <tr *ngFor="let report of reportData; let i = index" class="table-design">
+                              <td style="padding: 5px;">{{report.rptmessage}} 
+                                  <a style="cursor: pointer;" (click)="deleteReport(report.reportid,report.against)"><i *ngIf="this.currentUser === report.reporter " class="fa fa-trash-o change_color" aria-hidden="true"></i></a>
+                              </td>
+                          </tr>
+                      </table>
+                      </div>
+                      <div class="review-box">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="reportMsg" placeholder="Add Your Report">   
+                          <a (click)="addReport(this.reportMsg,this.SelectedOwner.oemail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                Add Report</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+
+                  <!-- message to tenant  -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Send Message to {{this.SelectedOwner.oname}}</h5>
+                                 
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                          <table style="width: 100%;">
+                              <ng-container *ngFor="let message of messageData; let i = index">
+                                  <ng-container *ngIf="i === 0 || message.date !== messageData[i - 1].date;">
+                                      <tr>
+                                          <td colspan="2" style="text-align: center;">{{ message.date }}</td>
+                                      </tr>
+                                  </ng-container>
+                                  <tr class="table-design">
+                                      <td *ngIf="currentUser !== message.sender">{{ message.message }} <sub>{{ message.time }}</sub></td>
+                                      <td *ngIf="currentUser === message.sender" style="text-align: right;">{{ message.message }}
+                                          <sub>{{ message.time }}
+                                              <a style="cursor: pointer;" (click)="deleteMessage(message.messageid,message.reciever)">
+                                                  <i *ngIf="currentUser === message.sender " class="fa fa-trash-o change_color" aria-hidden="true"></i>
+                                              </a>
+                                          </sub>
+                                      </td>
+                                  </tr>
+                              </ng-container>
+                          </table>
+                      </div>
+                      <!-- Initialize msgLastDate here -->
+                      
+
+                      <div class="review-box">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="messageMsg" placeholder="Type Your message">   
+                          <a (click)="addMessage(this.messageMsg,this.SelectedOwner.oemail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                send Message</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+
+
+              </ng-container>
+          </div>  
+          
+          </div>
+
+          <div *ngIf="SelectedTenant.tid != 0">
+              
+            <div class="row">
+              <ng-container> 
+                 
+                  <!-- tenant details -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Details of {{this.SelectedTenant.tname}}</h5>
+                      <table  class="inner-scrollable-div " [ngClass]="{'overflow-auto': isScrollable}" >
+                          <tr style="text-align:center">
+                              <td>
+                                  <img [src]="this.SelectedTenant.photo!==null  ? this.SelectedTenant.photo : '../../../assets/images/profile.png'"                                            
+                                  style="width: 125px; height: 125px; margin-top: 20px;"
+                                  class="profile-image">
+                                   </td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px; margin-top: 20px;">
+                              <td><h5> Name : &nbsp;&nbsp;{{this.SelectedTenant.tname}}</h5></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td><h6> Email : &nbsp;&nbsp;{{this.SelectedTenant.temail}}</h6></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td> <h6>Contact No. : &nbsp;&nbsp;{{this.SelectedTenant.tcontact}}</h6></td>
+                          </tr>
+                          <tr style="text-align:left; padding-left: 20px;">
+                              <td><h6>Address : &nbsp;&nbsp;{{this.SelectedTenant.taddress}}</h6></td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <!-- report details -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Report Against {{this.SelectedTenant.tname}}</h5>                                           
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                      <table style="width:100%">
+                          <tr *ngFor="let report of reportData; let i = index" class="table-design">
+                              <td style="padding: 5px;">{{report.rptmessage}} 
+                                  <a style="cursor: pointer;" (click)="deleteReport(report.reportid,report.against)"><i *ngIf="this.currentUser === report.reporter " class="fa fa-trash-o change_color" aria-hidden="true"></i></a>
+                              </td>
+                          </tr>
+                      </table>
+                      </div>
+                      <div class="review-box">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="reportMsg" placeholder="Add Your Report">   
+                          <a (click)="addReport(this.reportMsg,this.SelectedTenant.temail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                Add Report</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+
+                  <!-- message to tenant  -->
+                  <div class="col-lg-4 col-sm-6">
+                      <h5>Send Message to {{this.SelectedTenant.tname}}</h5>
+                                 
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                          <table style="width: 100%;">
+                              <ng-container *ngFor="let message of messageData; let i = index">
+                                  <ng-container *ngIf="i === 0 || message.date !== messageData[i - 1].date;">
+                                      <tr>
+                                          <td colspan="2" style="text-align: center;">{{ message.date }}</td>
+                                      </tr>
+                                  </ng-container>
+                                  <tr class="table-design">
+                                      <td *ngIf="currentUser !== message.sender">{{ message.message }} <sub>{{ message.time }}</sub></td>
+                                      <td *ngIf="currentUser === message.sender" style="text-align: right;">{{ message.message }}
+                                          <sub>{{ message.time }}
+                                              <a style="cursor: pointer;" (click)="deleteMessage(message.messageid,message.reciever)">
+                                                  <i *ngIf="currentUser === message.sender " class="fa fa-trash-o change_color" aria-hidden="true"></i>
+                                              </a>
+                                          </sub>
+                                      </td>
+                                  </tr>
+                              </ng-container>
+                          </table>
+                      </div>
+                      <!-- Initialize msgLastDate here -->
+                      
+
+                      <div class="review-box">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="messageMsg" placeholder="Type Your message">   
+                          <a (click)="addMessage(this.messageMsg,this.SelectedTenant.temail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                send Message</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+
+
+              </ng-container>
+          </div>    
+            
+            </div>
+        </div>
+
+        <div class="col-md-10 scrollable-div" *ngIf="option == 3" [ngClass]="{'overflow-auto': isScrollable}">
+          <section *ngIf="option == 3">                       
+            <div class="row">
+              <ng-container
+                *ngFor="let property of propertiesdata; let i = index"
+              >
+                <div class="col-lg-6 col-sm-6">
+                  <a (click)="selectPropertyId(property, 22, 3)">
+                  <div
+                    class="card-body bg-gray text-center"
+                    style="cursor: pointer"
+                  >
+                    <table class="table table-design">
+                      <tbody>
+                        <tr>
+                          <td colspan="3">
+                            <h5 class="card-title mt-3 change_color">
+                              {{ property.propertyName }}
+                            </h5>
+                            <p>
+                              {{ property.subLocality }} &nbsp;
+                              {{ property.city }} &nbsp;
+                              <a
+                                class="change_color"
+                                href="{{ property.locality }}"
+                                style="text-decoration: none"
+                                ><i
+                                  class="fa fa-map-marker"
+                                  aria-hidden="true"
+                                ></i
+                                >&nbsp; Explore Nearby</a
+                              >
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expectedRent }} </b><br />
+                            <p
+                              style="font-size: smaller"
+                              *ngIf="
+                                property.priceNegotiable === 'Yes';
+                                else elseBlock
+                              "
+                            >
+                              {{ property.subType }} (Negotiable)
+                            </p>
+                            <ng-template #elseBlock
+                              ><p style="font-size: smaller">
+                                {{ property.subType }} (Non-Negotiable)
+                              </p></ng-template
+                            >
+                          </td>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expecteddeposit }}</b> <br />
+                            <p style="font-size: smaller">Deposit</p>
+                          </td>
+                          <td>
+                            <b
+                              ><i
+                                class="fa fa-area-chart"
+                                aria-hidden="true"
+                              ></i>
+                              {{ property.carpetArea }}
+                            </b>
+                            <br />
+                            <p style="font-size: smaller">
+                              {{ property.areaType }}
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <img
+                              [src]="property.photo1"
+                              (error)="setDefaultImage($event)"
+                              class="img-fluid w-100 rounded fixed-size-image"
+                              alt=""
+                            />
+                          </td>
+                          <td>
+                            <table style="margin: 0px; padding: 0px">
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bed" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: smaller">
+                                      {{ property.furnishing }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-home" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      &nbsp;{{ property.type }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-users" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.willingType }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-key" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.availabilityDate }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr style="margin: 0px; padding: 0px">
+                          <td
+                            colspan="3"
+                            style="
+                              margin: 0px;
+                              padding: 0px;
+                              text-align: center;
+                            "
+                          >
+                            <p style="background-color: #f88d8d; color: white">
+                              <a (click)="selectOwnerByPropertyId(23 , 3 , property)"><b class="change_colors" style="text-align: left"
+                                >Get Owner Details</b></a>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <a (click)="RemoveFromCart(property)">
+                              <b class="change_colors"> Remove From Cart</b>
+                              <b style="font-size: xx-large; text-align: right"
+                                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i                                  
+                                  class="fa fa-heart-o" 
+                                  aria-hidden="true"
+                                ></i
+                              ></b></a>
+                            </p>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                    <hr
+                      class="w-100 mt-3"
+                      style="border-top: 2px solid #ff8c00; border-radius: 100%"
+                    />
+                  </div>
+                </a>
+                </div>
+                <ng-container
+                  *ngIf="(i + 1) % 4 === 0 || i === propertiesdata.length - 1"
+                >
+                  <div class="row"></div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </section>
+        </div>        
+
+        <div class="col-md-10 scrollable-div" *ngIf="option==4" [ngClass]="{'overflow-auto': isScrollable}">
+
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="heading text-center text-capitalize font-weight-bold py-5">
+                      <h6 class="display-4  text-center">Welcome to the Tenant Service Center!</h6>
+                      <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                      <h6>Are you ready to find your ideal property hassle-free? Our platform is designed with you in mind, offering a range of features tailored to meet your needs as a tenant. Whether you're searching for a new rental, looking to lease, or seeking the perfect place to call home, we've got you covered.</h6>
+                  </div>
+              </div>
+          </div>
+      
+          <section class="container">
+              <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+                      <div class="card-body bg-gray text-center">
+                          <a routerLink="tenant-login" style="color: black; text-decoration: none; font-weight: bold;">
+                              <img src="../../../assets/images/a1.webp" class="img-fluid w-100 rounded" alt="">
+                              <h6 class="card-title mt-3">Buying a Home</h6>
+                              <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <div class="card-body bg-gray text-center">
+                          <a routerLink="tenant-login" style="color: black; text-decoration: none; font-weight: bold;">
+                              <img src="../../../assets/images/a2.webp" class="img-fluid w-100 rounded" alt="">
+                              <h6 class="card-title mt-3">Renting a Home</h6>
+                              <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <div class="card-body bg-gray text-center">
+                          <a routerLink="owner-login1" style="color: black; text-decoration: none; font-weight: bold;">
+                              <img src="../../../assets/images/a3.webp" class="img-fluid w-100 rounded" alt="">
+                              <h6 class="card-title mt-3">Sell/Rent your Property</h6>
+                              <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <div class="card-body bg-gray text-center">
+                          <a routerLink="tenant-login" style="color: black; text-decoration: none; font-weight: bold;">
+                              <img src="../../../assets/images/a4.webp" class="img-fluid w-100 rounded" alt="">
+                              <h6 class="card-title mt-3">PG and Co-living</h6>
+                              <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                          </a>
+                      </div>
+                  </div>
+      
+              </div>
+          </section>                
+      
+          <div class="row">
+            <!-- Search Properties -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5 class="card-title">Search Properties with Ease</h5>
+                    <h6>Looking for your next home? Our intuitive interface allows you to effortlessly browse through available properties online. <a style="color:blue;"  (click)="openSection(2)">Start your search now</a> and find the perfect match for your lifestyle.</h6>
+                </div>
+            </div>
+            <!-- Communicate Directly -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5>Communicate Directly</h5>
+                    <h6>Connect directly with property owners or managers through our platform. Easily inquire about property details, schedule viewings, and communicate your preferences to streamline the rental process without any hassle.</h6>
+                </div>
+            </div>
+            <!-- Stay Informed -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5>Stay Informed</h5>
+                    <h6>Keep track of your property inquiries and messages from landlords with <a style="color:blue; cursor:pointer;" (click)="openSection(5)">instant notifications</a>. Stay updated on property availability, viewing appointments, and any updates related to your search, so you never miss out on your dream home.</h6>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Second row of feature cards -->
+        <div class="row">
+            <!-- Review Properties -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5>Review Properties</h5>
+                    <h6>Gain insights into potential properties by checking reviews and ratings from previous tenants. Get a sense of the neighborhood, amenities, and overall living experience to make informed decisions about your next rental.</h6>
+                </div>
+            </div>
+            <!-- Report Issues -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5>Report Issues</h5>
+                    <h6>Encountered an issue with a property or need assistance? Our dedicated support team is here to help! <a style="color:blue; cursor:pointer;"  (click)="openSection(5)">Report any concerns</a> you encounter, and our dedicated team will promptly address your concerns and provide assistance as needed.</h6>
+                </div>
+            </div>
+            <!-- Get Notified Instantly -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="card-body bg-gray text-center">
+                    <h5>Get Notified Instantly</h5>
+                    <h6>Stay updated with <a style="color:blue; cursor:pointer;"  (click)="openSection(5)">timely notifications</a> about inquiries, messages from interested parties, and any updates related to your properties. Optimize your notifications to ensure you never miss out on important communications.</h6>
+                </div>
+            </div>
+        </div>
+    
+        <h6>Ready to find your perfect rental? Join our platform now and experience the convenience of searching for properties tailored to your preferences!</h6>
+        </div>
+      
+        <div class="col-md-10 scrollable-div" *ngIf="option==5" [ngClass]="{'overflow-auto': isScrollable}">
+          <h4 style="margin-top: 10px; margin-bottom: 10px;">Notifications</h4>
+          <table style="text-align:left; width:100%" class="inner-scrollable-div table table-striped" [ngClass]="{'overflow-auto': isScrollable}" >                                                   
+              <tbody style="text-align:left">                                                
+                  <tr *ngFor="let notification of notificationData" class="table-design">                                                                                                 
+                      <td>{{notification.message}}</td>                                                                                                                                             
+                  </tr>
+                  </tbody>
+          </table>
+      </div>
+
+      <div class="col-md-10 scrollable-div" *ngIf="option==6" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="row">                  
+                  <!-- Messangers details -->
+                  <div class="col-lg-6 col-sm-6">
+                      <h4 style="margin-top: 20px;">Messanger</h4> 
+                      
+                      <table style="text-align:left; width:100%" class="inner-scrollable-div table table-striped" [ngClass]="{'overflow-auto': isScrollable}" >                                                   
+                          <tbody style="text-align:left">                                                
+                              <tr *ngFor="let messager of messanger" class="table-design">  
+                                  
+                                  <td  *ngIf="messager.email !== this.currentUser" style="width: 100%; margin: 0px; padding: 0px; padding-left: 10px; ">
+                                  <a class="row " style="cursor: pointer; width: 100%;" (click)="openChatting(messager.email,messager.name)"> 
+                                        
+                                      <p style="text-align:left; width:50% ">{{messager.name}}</p> 
+                                      <p style="text-align:left;width:30% ">{{messager.email}} </p>
+                                      <p style="text-align:left;width:20% ">{{messager.type}}</p>                                                                                           
+                                                                                                                                                                               
+                                  </a></td>
+                              </tr>
+                              </tbody>
+                      </table>                            
+                      <div class="row" style="width: 100%">
+                          <div style="width: 90%;"></div>
+                      <a  *ngIf="this.indicator===0" (click)="selectAction(1)"><i style="font-size: xx-large; cursor: pointer;" class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                      <a *ngIf="this.indicator===1" (click)="selectAction(0)"><i style="font-size: xx-large; cursor: pointer;" class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                      </div>
+                  </div>
+
+                  <!-- messages details  -->
+                  <div *ngIf="this.messagerEmail !== ''" class="col-lg-6 col-sm-6">
+                      <h5 style="margin-top: 40px;">{{this.messagerName}}</h5>
+                                 
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                          <table style="width: 100%;">
+                              <ng-container *ngFor="let message of messageData; let i = index">
+                                  <ng-container *ngIf="i === 0 || message.date !== messageData[i - 1].date;">
+                                      <tr>
+                                          <td colspan="2" style="text-align: center;">{{ message.date }}</td>
+                                      </tr>
+                                  </ng-container>
+                                  <tr>
+                                      <td *ngIf="currentUser !== message.sender">{{ message.message }} <sub>{{ message.time }}</sub></td>
+                                      <td *ngIf="currentUser === message.sender" style="text-align: right;">{{ message.message }}
+                                          <sub>{{ message.time }}
+                                              <a class="change_color" style="cursor: pointer;" (click)="deleteMessage(message.messageid,message.reciever)">
+                                                  <i *ngIf="currentUser === message.sender " class="fa fa-trash-o change_color" aria-hidden="true"></i>
+                                              </a>
+                                          </sub>
+                                      </td>
+                                  </tr>
+                              </ng-container>
+                          </table>
+                      </div>                            
+                      
+                      <div class="review-box">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;" type="text" name="review" id="" [(ngModel)]="messageMsg" placeholder="Type Your message">   
+                          <a (click)="addMessageFromMessanger(this.messageMsg,this.messagerEmail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                send Message</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+
+            
+          </div>      
+          
+      </div>
+
+      </div>
+    </div>
+  </section>
+</body>

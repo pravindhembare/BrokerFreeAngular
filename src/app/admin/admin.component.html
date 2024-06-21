@@ -1,0 +1,1508 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<body>
+  <section class="section">
+    <div class="">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="contact-us-content">
+            <div class="sidebar">
+
+              <img [src]="(this.imageUrl !== 'null' && this.imageUrl !== null) ? imageUrl : '../../assets/images/admin.jpg'" 
+              alt="Selected Image" 
+              style="width: 100px; height: 100px; margin-top: 20px;"
+              class="profile-image">                        
+              <p class="user" style="margin-left: 40px;">{{ this.userName }}</p>
+
+
+              <ul class="nav flex-column">
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(1)" value="1"
+                    >Property Management</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(2)"
+                    >Tenant Management</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(3)"
+                    >Owner Management</a
+                  >
+                </li>
+
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(4)">Report Management</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(5)"
+                    >Notification Center</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(6)"
+                    >Message Center</a
+                  >
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" (click)="openSection(7)"
+                    >Help and Support</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" (click)="logout()">Logout and Exit</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+              
+        <!-- This is Property Management Section. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option == 1" [ngClass]="{'overflow-auto': isScrollable}">                    
+                <div class="heading text-capitalize font-weight-bold py-5">
+                    <h4 class="display-5  text-center">Property Management Section</h4>
+                    <hr class="mb-0 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+                </div> 
+                
+                <div class="row justify-content-center mb-5">
+                  <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openOneOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> List Of All Properties</span>
+                  <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openOneOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Properties</span>
+                  <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openOneOfSubSection(3)"><i class="fa fa-cogs" aria-hidden="true"></i> Maintain Property Features</span>                                  
+                </div> 
+                
+                <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.OneOf==1">
+                  <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+                      <tbody style="text-align:left">   
+                          <tr class="bg-gray" style="font-weight: bold;">
+                              <td >Id</td>
+                              <td>Property Name</td>
+                              <td>Owner UserName</td>
+                              <td>Property Type</td>
+                              <td>Property City</td>
+                              <td>Delete</td>                        
+                          </tr>                                             
+                          <tr *ngFor="let property of propertiesdata" (click)="selectPropertyById($event,property.basicDetailsId,11,1)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                              <td>{{property.basicDetailsId}}</td>
+                              <td>{{property.propertyName}}</td>
+                              <td>{{property.oemail}}</td>
+                              <td>{{property.subType}}</td>
+                              <td>{{property.city}}</td>
+                              <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deletePropertyById(property.basicDetailsId)"></i></td>                                                                                                                                          
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>                                          
+
+                <div class= "d-flex justify-content-center" *ngIf="this.OneOf==2 && this.OneOfTwoOf==1">
+                  <div class="container" style="width: 80%;">
+                    <form #propertyForm="ngForm" (ngSubmit)="submitForm(propertyForm)">
+        
+                      <!-- for city and subtype -->
+                      <div class="form-group">
+                        <h6 style="margin-top: 15px;"><label for="city">Search localities or landmark *</label></h6>
+        
+                        <div class="row">
+                          <div class="col-lg-6 py-2">
+                            <select
+                              class="form-control"
+                              id="city"
+                              name="city"
+                              [(ngModel)]="city"
+                            >
+                              <option value="Pune" selected>Property in Pune</option>
+                              <option value="Delhi/NCR">Property in Delhi/NCR</option>
+                              <option value="Mumbai">Property in Mumbai</option>
+                              <option value="Bangalore">Property in Bangalore</option>
+                              <option value="Hyderabad">Property in Hyderabad</option>
+                              <option value="Kolkata">Property in Kolkata</option>
+                              <option value="Chennai">Property in Chennai</option>
+                              <option value="Ahmedabad">Property in Ahmedabad</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+        
+                          <div class="col-lg-6 pt-1">
+                            <div
+                              class="btn-group btn-group-toggle mt-1"
+                              data-toggle="buttons"
+                            >
+                              <label
+                                class="btn btn-secondary mr-2"
+                                [class.active]="subType === 'Sell'"
+                                [ngStyle]="{
+                                  'background-color':
+                                    subType === 'Sell' ? '#000000' : ''
+                                }"
+                              >
+                                <input
+                                  type="radio"
+                                  name="options"
+                                  id="option1"
+                                  autocomplete="off"
+                                  (click)="selectLookingOption('Sell')"
+                                />
+                                Sell
+                              </label>
+                              <label
+                                class="btn btn-secondary mr-2"
+                                [class.active]="subType === 'Rent/Lease'"
+                                [ngStyle]="{
+                                  'background-color':
+                                    subType === 'Rent/Lease' ? '#000000' : ''
+                                }"
+                              >
+                                <input
+                                  type="radio"
+                                  name="options"
+                                  id="option2"
+                                  autocomplete="off"
+                                  (click)="selectLookingOption('Rent/Lease')"
+                                />
+                                Rent/Lease
+                              </label>
+                              <label
+                                class="btn btn-secondary"
+                                [class.active]="subType === 'PG'"
+                                [ngStyle]="{
+                                  'background-color': subType === 'PG' ? '#000000' : ''
+                                }"
+                              >
+                                <input
+                                  type="radio"
+                                  name="options"
+                                  id="option3"
+                                  autocomplete="off"
+                                  (click)="selectLookingOption('PG')"
+                                />
+                                PG
+                              </label>
+                            </div>
+                          </div>
+                        </div>                
+                      </div>
+        
+                      <!-- for specification and type -->
+                      <div class="form-group">
+                        <div class="row">
+        
+                          <div class="col-lg-4">
+                             <div class="btn-group btn-group-toggle mt-1" data-toggle="buttons"  *ngIf="subType != 'PG'&& subType === 'Rent/Lease' || subType === 'Sell' ">
+                              <label class="btn btn-secondary mr-2" [class.active]="specification === 'residential'">
+                              <input type="radio" name="propertyType" (click)="selectPropertyType('residential')" autocomplete="off"> Residential
+                              </label>
+                              <label class="btn btn-secondary" [class.active]="specification === 'commercial'">
+                              <input type="radio" name="propertyType" (click)="selectPropertyType('commercial')" autocomplete="off"> Commercial
+                              </label>
+                            </div>
+                          </div>
+        
+                          <div class="col-lg-8">
+                                <div *ngIf="specification === 'residential' && subType != 'PG'" class="mt-1">                      
+                                  <div class="btn-group-toggle" data-toggle="buttons">
+                                      <div class="btn-group d-flex flex-wrap">
+                                          <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Flat/Apartment'">
+                                              <input type="radio" name="residentialType" (click)="selectProperty('Flat/Apartment')"> Flat
+                                          </label>                                 
+                                      <!-- </div>
+                                      <div class="btn-group d-flex flex-wrap">                                 -->
+                                          <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === '1RK Studio Apartment'">
+                                              <input type="radio" name="residentialType" (click)="selectProperty('1RK Studio Apartment')"> 1RK
+                                          </label>
+                                          <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === '2RK Studio Apartment'">
+                                              <input type="radio" name="residentialType" (click)="selectProperty('2RK Studio Apartment')"> 2RK
+                                          </label>
+                                      <!-- </div>
+                                      <div class="btn-group d-flex flex-wrap"> -->
+                                          <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Independent/Builder Floor'">
+                                              <input type="radio" name="residentialType" (click)="selectProperty('Independent/Builder Floor')"> Builder Floor
+                                          </label>
+                                          <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Independent House/Villa'">
+                                            <input type="radio" name="residentialType" (click)="selectProperty('Independent House/Villa')"> Independent House
+                                        </label>
+                                      </div>
+                                  </div>
+                                </div>
+                                          
+                                <div *ngIf="specification === 'commercial' && subType != 'PG'" class="mt-1">                           
+                                    <div class="btn-group-toggle" data-toggle="buttons">
+                                        <div class="btn-group d-flex flex-wrap">
+                                            <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Office'">
+                                                <input type="radio" name="commercialType" (click)="selectProperty('Office')"> Office
+                                            </label>
+                                            <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Retail'">
+                                                <input type="radio" name="commercialType" (click)="selectProperty('Retail')"> Retail
+                                            </label>
+                                        <!-- </div>
+                                        <div class="btn-group d-flex flex-wrap"> -->
+                                            <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Warehouses'">
+                                                <input type="radio" name="commercialType" (click)="selectProperty('Warehouses')"> Warehouses
+                                            </label>
+                                            <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Restaurants'">
+                                                <input type="radio" name="commercialType" (click)="selectProperty('Restaurants')"> Restaurants
+                                            </label>
+                                            <!-- </div>
+                                            <div class="btn-group d-flex flex-wrap"> -->
+                                            <label class="btn btn-secondary mr-2 mb-2" [class.active]="type === 'Other'">
+                                                <input type="radio" name="commercialType" (click)="selectProperty('Other')"> Other
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+        
+                        </div>
+                      </div>
+        
+                      <!-- <hr class="w-5 mt-0 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/> -->
+        
+                       <!-- for expected rent and deposit  -->
+                       <div class="form-group">
+                        <div class="row">
+        
+                          <div class="col-lg-6">
+                            <input
+                            type="number"
+                            class="form-control"
+                            id="expectedRent"
+                            name="expectedRent"
+                            placeholder="Expected Rent/Price up to"
+                            [(ngModel)]="expectedRent"/>
+                          </div>
+        
+                          <div class="col-lg-6">
+                            <input
+                            type="number"
+                            class="form-control"
+                            id="expectedDeposit"
+                            name="expectedDeposit"
+                            placeholder="Expected Deposit/Advance up to"
+                            [(ngModel)]="expectedDeposit"/>
+                          </div>
+                                
+                        </div>
+                        <div class="mt-3 ml-3">
+                          <label *ngIf="subType !== 'Sell'">
+                              <input type="checkbox" (change)="updateElectricWaterExcluded($event)" [checked]="electricWaterExcluded === 'Yes'">
+                              Electric and Water Charges Excluded
+                          </label>
+                          <label>
+                              <input style="margin-left: 20px;" type="checkbox" (change)="updatePriceNegotiable($event)" [checked]="priceNegotiable === 'Yes'">
+                              Price Negotiable
+                          </label>
+                      </div>
+                      </div>
+                      
+                      <hr class="w-5 mt-0 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/>
+        
+                      <!-- for avalability data, willing to and parking -->
+                      <div class="form-group extra_margin">
+                        <div class="row">
+        
+                          <div class="col-lg-4">
+                            <p for="availableFromDate">Available Date From</p>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="availableFromDate"
+                              name="availableFromDate"
+                              [(ngModel)]="availableFromDate"/>
+                          </div>
+        
+                          <div class="col-lg-5">
+                            <p for="availableFromDate">Willing to</p>
+                           <div class="input-group"> 
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="willing" id="willing1" value="Bachloer" [(ngModel)]="willing">
+                              <label class="form-check-label circle-label1" for="willing1">Bachloer</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="willing" id="willing2" value="Family" [(ngModel)]="willing">
+                              <label class="form-check-label circle-label1" for="willing2">Family</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="willing" id="willing3" value="Any" [(ngModel)]="willing">
+                              <label class="form-check-label circle-label1" for="willing3">Any</label>
+                            </div>
+                          </div>
+                          </div>
+        
+                          <div class="col-lg-3">
+                            <p for="availableFromDate">Parking</p>
+                           <div class="input-group">                    
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="parking" id="parking1" value="Yes" [(ngModel)]="parking">
+                                <label class="form-check-label circle-label1" for="parking1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="parking" id="parking2" value="No" [(ngModel)]="parking">
+                                <label class="form-check-label circle-label1" for="parking2">No</label>
+                            </div>                
+                           </div>
+                          </div> 
+        
+                        </div>
+                      </div>              
+        
+                      <!-- <hr class="w-5 mt-1 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/> -->
+                      <!-- for property and and furnishing -->
+                      <div class="form-group extra_margin">
+                        <div class="row">
+        
+                          <div class="col-lg-7">
+                            <p>Property age</p> 
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge1" value="0-1 year" [(ngModel)]="propertyAge">
+                                <label class="form-check-label circle-label1" for="propertyAge1">0-1 year</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge2" value="1-5 year" [(ngModel)]="propertyAge">
+                                <label class="form-check-label circle-label1" for="propertyAge2">1-5 year</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge3" value="5-10 year" [(ngModel)]="propertyAge">
+                                <label class="form-check-label circle-label1" for="propertyAge3">5-10 year</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="propertyAge" id="propertyAge4" value="10+ year" [(ngModel)]="propertyAge">
+                                <label class="form-check-label circle-label1" for="propertyAge4">10+ year</label>
+                            </div>
+                          </div>
+        
+                          <div class="col-lg-5">
+                            <p>Furnishing</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="furnishing" id="furnishing1" value="Furnished" [(ngModel)]="furnishing">
+                                <label class="form-check-label circle-label1" for="furnishing1">Furnished</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="furnishing" id="furnishing2" value="Semi-furnished" [(ngModel)]="furnishing">
+                                <label class="form-check-label circle-label1" for="furnishing2">Semi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="furnishing" id="furnishing3" value="Un-furnished" [(ngModel)]="furnishing">
+                                <label class="form-check-label circle-label1" for="furnishing3">Unfurnished</label>
+                            </div>
+                          </div>
+        
+                        </div>
+                      </div>
+                                  
+                     <!-- for bathroom, bedroom and balcony -->
+                     <div class="form-group extra_margin">
+                      <div class="row">
+        
+                        <div class="col-lg-4">
+                          <p>No. of Bedrooms/Restrooms</p>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bedrooms" id="bedroom5" value="0" [(ngModel)]="bedrooms">
+                              <label class="form-check-label circle-label" for="bedroom5">0</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bedrooms" id="bedroom1" value="1" [(ngModel)]="bedrooms">
+                              <label class="form-check-label circle-label" for="bedroom1">1</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bedrooms" id="bedroom2" value="2" [(ngModel)]="bedrooms">
+                              <label class="form-check-label circle-label" for="bedroom2">2</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bedrooms" id="bedroom3" value="3" [(ngModel)]="bedrooms">
+                              <label class="form-check-label circle-label" for="bedroom3">3</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bedrooms" id="bedroom4" value="3+" [(ngModel)]="bedrooms">
+                              <label class="form-check-label circle-label" for="bedroom4">3+</label>
+                          </div>                  
+                        </div>
+        
+                        <div class="col-lg-4">
+                          <p>No. of Bathrooms</p>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bathrooms" id="bathroom5" value="0" [(ngModel)]="bathrooms">
+                              <label class="form-check-label circle-label" for="bathroom5">0</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bathrooms" id="bathroom1" value="1" [(ngModel)]="bathrooms">
+                              <label class="form-check-label circle-label" for="bathroom1">1</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bathrooms" id="bathroom2" value="2" [(ngModel)]="bathrooms">
+                              <label class="form-check-label circle-label" for="bathroom2">2</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bathrooms" id="bathroom3" value="3" [(ngModel)]="bathrooms">
+                              <label class="form-check-label circle-label" for="bathroom3">3</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="bathrooms" id="bathroom4" value="3+" [(ngModel)]="bathrooms">
+                              <label class="form-check-label circle-label" for="bathroom4">3+</label>
+                          </div>                       
+                        </div>
+        
+                        <div class="col-lg-4">
+                          <p>No. of Balconies</p>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="balconies" id="balconie1" value="0" [(ngModel)]="balconies">
+                              <label class="form-check-label circle-label" for="balconie1">0</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="balconies" id="balconie2" value="1" [(ngModel)]="balconies">
+                              <label class="form-check-label circle-label" for="balconie2">1</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="balconies" id="balconie3" value="2" [(ngModel)]="balconies">
+                              <label class="form-check-label circle-label" for="balconie3">2</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="balconies" id="balconie4" value="3" [(ngModel)]="balconies">
+                              <label class="form-check-label circle-label" for="balconie4">3</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="balconies" id="balconie5" value="3+" [(ngModel)]="balconies">
+                              <label class="form-check-label circle-label" for="balconie5">3+</label>
+                          </div>                  
+                        </div>
+        
+                      </div>
+                     </div>
+        
+                     <hr class="w-5 mt-4 mb-1" style="border-top: 2px solid #ff8c00; border-radius:25%"/>
+                    <!-- for submit and cleae button -->
+                    <div class="form-group extra_margin">
+                      <div class="row">
+        
+                        <div class="col-lg-8">                   
+                        </div>
+                        <div class="col-lg-4" >
+                          <button type="button"class="btn btn-secondary"(click)="clearForm()"> Clear Form </button> &nbsp;&nbsp;
+                          <button type="submit" class="btn btn-primary">Search Property</button>
+                        </div>                
+                      </div>
+                    </div>                            
+                    </form>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.OneOf==2 && this.OneOfTwoOf==2">
+                  <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+                      <tbody style="text-align:left">   
+                          <tr class="bg-gray" style="font-weight: bold;">
+                              <td >Id</td>
+                              <td>Property Name</td>
+                              <td>Owner UserName</td>
+                              <td>Property Type</td>
+                              <td>Property City</td>
+                              <td>Delete</td>                        
+                          </tr>                                             
+                          <tr *ngFor="let property of propertiesdata" (click)="selectPropertyById($event,property.basicDetailsId,11,1)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                              <td>{{property.basicDetailsId}}</td>
+                              <td>{{property.propertyName}}</td>
+                              <td>{{property.oemail}}</td>
+                              <td>{{property.subType}}</td>
+                              <td>{{property.city}}</td>
+                              <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deletePropertyById(property.basicDetailsId)"></i></td>                                                                                                                                          
+                          </tr>
+                      </tbody>
+                  </table>
+                </div> 
+
+                <div class= "justify-content-center" *ngIf="this.OneOf==3">
+                  <div class="row">
+
+                    <div class="col-lg-6 col-sm-6">
+                      <h5 style="margin-left: 20px;">Add Property City</h5>
+                      <div style="width: 70%; margin-left: 20%; margin-top: 50px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}">
+                        <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #NotificationForm="ngForm" (ngSubmit)="submitFeaturerForm()">             
+                          <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="fcity" name="fcity" placeholder="Enter City Name">
+                          <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Add_City</button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6 d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">
+                      <table style="text-align:center; width: 100%;" class=" table table-striped table-auto" >                                                   
+                        <tbody style="text-align:center">   
+                            <tr class="bg-gray" style="font-weight: bold;">
+                                <td >Id</td>
+                                <td>City Name</td>                                                     
+                                <td>Delete</td>                        
+                            </tr>                                             
+                            <tr *ngFor="let feature of featuresData" class=" table-design" style="cursor: pointer;">                                                                                                 
+                                <td>{{feature.fid}}</td>
+                                <td>{{feature.city}}</td>                                                    
+                                <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteFeatureById(feature.fid)"></i></td>                                                                                                                                          
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div> 
+
+                  </div>
+                </div>
+        </div>
+
+        <!-- This is property and Review Details Section. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option == 11" [ngClass]="{'overflow-auto': isScrollable}">
+          <h6><a  class="link" style="margin-top: 10px;" (click)="openSection(this.backOption)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>
+          <div class="heading text-center text-capitalize font-weight-bold ">
+            <h4 class="display-5  text-center">Property And Review Details</h4>
+            <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>     
+          
+          <div class="row justify-content-center mb-5">
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="deletePropertyById(this.SelectedPropertyId)"><i class="fa fa-trash-o change_color " aria-hidden="true"></i> Delete This Property</span>                 
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="selectOwnerByPropertyId(12 , 11)"><i class="fa fa-user" aria-hidden="true"></i> Get Owner Details</span>                 
+            <span *ngIf="this.OneOneOf==1" style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openOneOneOfSubSection(2,this.SelectedPropertyId)"><i class="fa fa-users" aria-hidden="true"></i> Get Intrested Tenants Details</span>
+            <span *ngIf="this.OneOneOf==2" style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openOneOneOfSubSection(1,this.SelectedPropertyId)"><i class="fa fa-info-circle" aria-hidden="true" ></i> Get Property & Review Details</span>                             
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="deleteReviewsByPropertyid(this.SelectedPropertyId)"><i class="fa fa-trash-o change_color " aria-hidden="true"></i> Delete All Reviews</span>                           
+          </div> 
+                                          
+          <div class=" row" *ngIf="this.OneOneOf==1">
+          <ng-container>                
+                <div class="col-lg-7 col-sm-6">
+                  <div
+                    class="card-body bg-gray text-center"
+                    style="cursor: pointer"
+                  >
+                    <table class="table table-design">
+                      <tbody>
+                        <tr>
+                          <td colspan="3">
+                            <h5 class="card-title mt-3 change_color">
+                              {{ property.propertyName }} 
+                            </h5>
+                          <b>
+                              <p style="font-size: small">
+                                {{property.propertyNo}} &nbsp; {{property.specification}} &nbsp;{{ property.type }}
+                              </p></b> 
+                            <p>
+                              {{ property.subLocality }} &nbsp;
+                              {{ property.city }} &nbsp;
+                              <a
+                                class="change_color"
+                                href="{{ property.locality }}"
+                                style="text-decoration: none"
+                                ><i
+                                  class="fa fa-map-marker"
+                                  aria-hidden="true"
+                                ></i
+                                >&nbsp; Explore Nearby</a
+                              >
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expectedRent }} </b><br />
+                            <p
+                              style="font-size: smaller"
+                              *ngIf="
+                                property.priceNegotiable === 'Yes';
+                                else elseBlock
+                              "
+                            >
+                              {{ property.subType }} (Negotiable)
+                            </p>
+                            <ng-template #elseBlock
+                              ><p style="font-size: smaller">
+                                {{ property.subType }} (Non-Negotiable)
+                              </p></ng-template
+                            >
+                          </td>
+                          <td>
+                            <b> ₹&nbsp;{{ property.expecteddeposit }}</b> <br />
+                            <p style="font-size: smaller">Deposit</p>
+                          </td>
+                          <td>
+                            <b
+                              ><i
+                                class="fa fa-area-chart"
+                                aria-hidden="true"
+                              ></i>
+                              {{ property.carpetArea }}
+                            </b>
+                            <br />
+                            <p style="font-size: smaller">
+                              {{ property.areaType }}
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>                          
+                          <td colspan="3">
+                            <table style="margin: 0px; padding: 0px; width: 100%;">
+                              <tr style="margin: 0px; padding: 0px">
+                                <td style="margin: 0px; padding: 0px">                                  
+                                  <i class="fa fa-archive" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: smaller">
+                                      {{ property.furnishing }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bed" aria-hidden="true"></i>
+                                  <!-- <i class="fa fa-home" aria-hidden="true"></i> -->
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ property.bedrooms }} Bedrooms
+                                    </p></b>                                  
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-bath" aria-hidden="true"></i>                                  
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ property.bathrooms }} Bathrooms
+                                    </p></b>                                  
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-building" aria-hidden="true"></i>                                  
+                                  <b>
+                                    <p style="font-size: small">
+                                     &nbsp;{{ property.balconies }} Balconies
+                                    </p></b>                                  
+                                </td>
+                              </tr>
+                              <tr style="margin: 0px; padding: 0px">
+
+                                <td style="margin: 0px; padding: 0px">
+                                 <i class="fa fa-building-o" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.propertyFloor }} / {{property.totalFloors}} No. Floor
+                                    </p></b
+                                  >
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.propertyAge }} Old
+                                    </p></b
+                                  >
+                                </td>
+
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-users" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.willingType }}
+                                    </p></b
+                                  >
+                                </td>
+                                <td style="margin: 0px; padding: 0px">
+                                  <i class="fa fa-key" aria-hidden="true"></i>
+                                  <b>
+                                    <p style="font-size: small">
+                                      {{ property.availabilityDate }}
+                                    </p></b
+                                  >
+                                </td>
+                              </tr>
+
+                              <tr style="margin: 0px; padding: 0px">                                
+                                <td colspan="4" style="margin-top: 10px; padding-top: 20px">
+                                  
+                                  <a style="font-size: larger;" (click)="updateImageCount('previous')"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>
+                                      &nbsp;&nbsp;&nbsp;<img
+                                      [src]="selectedImages[imageNumber]"
+                                      (error)="setDefaultImage($event)" />
+                                      &nbsp;&nbsp;&nbsp;<a style="font-size: larger;" (click)="updateImageCount('next')"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+                                </td>                                
+                              </tr>
+
+                              <tr *ngIf="property.agreementDuration !== null && property.agreementDuration !== '' "   style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Agreement Duration = {{ property.agreementDuration }} 
+                                  </p></b>
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Notive Period = {{ property.noticeTime }} 
+                                  </p></b>
+                                </td>                               
+                              </tr>                              
+
+                              <tr style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Electric & Water Charge Include  = {{ property.extraCharge }} 
+                                  </p></b>
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Parking Available  = {{ property.parking }} 
+                                  </p></b>
+                                </td>                               
+                              </tr>
+
+                              <tr *ngIf="property.otherRooms !== null && property.otherRooms !== '' " style="margin: 0px; padding: 0px">
+                                <td colspan="4" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    Extra Roomes = {{ property.otherRooms }} 
+                                  </p></b>
+                                </td>                                                             
+                              </tr>
+
+                              <tr *ngIf="property.additionalDetails !== null && property.additionalDetails !== '' " style="margin: 0px; padding: 0px">
+                                <td colspan="4" style="margin: 0px; padding: 0px">
+                                  <b><p style="font-size: smaller">
+                                    {{ property.additionalDetails }} 
+                                  </p></b>
+                                </td>                                                             
+                              </tr>
+
+                              <tr style="margin: 0px; padding: 0px">
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+
+                                </td>
+                                <td colspan="2" style="margin: 0px; padding: 0px">
+
+                                </td>                               
+                              </tr>
+                            </table>
+                          </td>
+
+                        </tr>
+                        <tr style="margin: 0px; padding: 0px">
+                          <td
+                            colspan="3"
+                            style="
+                              margin: 0px;
+                              padding: 0px;
+                              text-align: center;
+                            "
+                          >                            
+                          </td>                        
+                      </tfoot>
+                    </table>
+                    <hr
+                      class="w-100 mt-3"
+                      style="border-top: 2px solid #ff8c00; border-radius: 100%"
+                    />
+                  </div>
+                </div> 
+                
+                <div class="col-lg-5 col-sm-6">
+                  <h5>Property Reviews</h5>
+                  
+                  <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}"> 
+                  <ng-container *ngFor="let review of reviewData; let i = index">                                                                                      
+                    <table class="table">
+                      <tbody>
+                        <tr class="table-design">
+                          <td style="margin: 0px; padding:0px; padding-left:10px;">                            
+                            <p>
+                              <a style="cursor: pointer; font-weight: 600;" (click)="selectReviewerTenant(review.email,12,11)"> {{review.email}} </a> &nbsp;&nbsp;{{ review.date }} &nbsp;&nbsp;
+                              <a style="cursor: pointer;" (click)="deleteReview(review.rid)"><i class="fa fa-trash-o change_color " aria-hidden="true"></i></a>
+                              <br/>  {{review.review}}                                                    
+                            </p>
+                          </td>
+                        </tr>                       
+                      </tbody>                      
+                    </table>                                                                                       
+                  </ng-container>
+                </div>                                   
+
+                </div>                              
+              </ng-container>
+          </div>
+
+           <!-- instrested tenant details  -->
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.OneOneOf==2">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+                <tbody style="text-align:left">   
+                    <tr class="bg-gray" style="font-weight: bold;">
+                        <td >Id</td>
+                        <td>Tenant Name</td>
+                        <td>Tenant UserName</td>
+                        <td>Contact</td>
+                        <td>Address</td>
+                        <td>Delete</td>                        
+                    </tr>                                             
+                    <tr *ngFor="let tenant of tenantData" (click)="selectReviewerTenant(tenant.temail,12,11)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                        <td>{{tenant.tid}}</td>
+                        <td>{{tenant.tname}}</td>
+                        <td>{{tenant.temail}}</td>
+                        <td>{{tenant.tcontact}}</td>
+                        <td>{{tenant.taddress}}</td>
+                        <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="RemovecartyTemail(tenant.temail)"></i></td>                                                                                                                                          
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+
+        </div>
+                        
+
+         <!-- This is Owner/Tenant and Reports Details Section. -->
+         <div class="col-md-10 scrollable-div" *ngIf="option == 12" [ngClass]="{'overflow-auto': isScrollable}">
+          <h6><a  class="link" style="margin-top: 10px;" (click)="openSection(this.innerOption)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>                      
+          <div class="heading text-center text-capitalize font-weight-bold">
+            <h4 class="display-5  text-center">Owner/Tenant And Reports Details</h4>
+            <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>                     
+         
+          <div *ngIf="SelectedOwner.oid != 0">
+              
+            <div class="row">
+              <ng-container> 
+                 
+                  <!-- owner details -->
+                  <div class="col-lg-6 col-sm-6">
+                      <h5 style="margin-left: 20%;">Details of {{this.SelectedOwner.oname}}</h5>
+                      <table style="width: 100%;"  class=" inner-scrollable-div " [ngClass]="{'overflow-auto': isScrollable}" >
+                          <tr style="text-align:center;">
+                              <td>
+                                  <img [src]="this.SelectedOwner.photo!==null  ? this.SelectedOwner.photo : '../../../assets/images/profile.png'"                                            
+                                  style="width: 125px; height: 125px; margin-top: 20px; margin-left: 0px;"
+                                  class="profile-image">
+                                   </td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px; margin-top: 20px;">
+                              <td><h5> Name : &nbsp;&nbsp;{{this.SelectedOwner.oname}}</h5></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td><h6> Email : &nbsp;&nbsp;{{this.SelectedOwner.oemail}}</h6></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td> <h6>Contact No. : &nbsp;&nbsp;{{this.SelectedOwner.ocontact}}</h6></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td><h6>Address : &nbsp;&nbsp;{{this.SelectedOwner.oaddress}}</h6></td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <!-- report details -->
+                  <div class="col-lg-6 col-sm-6">
+                      <h5>Report Against {{this.SelectedOwner.oname}}</h5>                                           
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                      <table style="width:100%">
+                          <tr *ngFor="let report of reportData; let i = index" class="table-design">
+                              <td style="padding: 5px;">{{report.rptmessage}} 
+                                  <a style="cursor: pointer;" (click)="deleteReport(report.reportid,report.against)"><i class="fa fa-trash-o change_color" aria-hidden="true"></i></a>
+                              </td>
+                          </tr>
+                      </table>
+                      </div>
+                      <div class="review-box">
+                           <a (click)="deleteAllReport(this.SelectedOwner.oemail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                Delete All Reports</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>                  
+
+              </ng-container>
+          </div>  
+          
+          </div>
+
+          <div *ngIf="SelectedTenant.tid != 0">
+              
+            <div class="row">
+              <ng-container> 
+                 
+                  <!-- tenant details -->
+                  <div class="col-lg-6 col-sm-6">
+                      <h5 style="margin-left: 20%;">Details of {{this.SelectedTenant.tname}}</h5>
+                      <table style="width: 100%;"  class="inner-scrollable-div " [ngClass]="{'overflow-auto': isScrollable}" >
+                          <tr style="text-align:center">
+                              <td>
+                                  <img [src]="this.SelectedTenant.photo!==null  ? this.SelectedTenant.photo : '../../../assets/images/profile.png'"                                            
+                                  style="width: 125px; height: 125px; margin-top: 20px;  margin-left: 0px;  "
+                                  class="profile-image">
+                                   </td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px; margin-top: 20px;">
+                              <td><h5> Name : &nbsp;&nbsp;{{this.SelectedTenant.tname}}</h5></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td><h6> Email : &nbsp;&nbsp;{{this.SelectedTenant.temail}}</h6></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td> <h6>Contact No. : &nbsp;&nbsp;{{this.SelectedTenant.tcontact}}</h6></td>
+                          </tr>
+                          <tr style="text-align:center; padding-left: 20px;">
+                              <td><h6>Address : &nbsp;&nbsp;{{this.SelectedTenant.taddress}}</h6></td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <!-- report details -->
+                  <div class="col-lg-6 col-sm-6">
+                      <h5>Report Against {{this.SelectedTenant.tname}}</h5>                                           
+                      <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+                      <table style="width:100%">
+                          <tr *ngFor="let report of reportData; let i = index" class="table-design">
+                              <td style="padding: 5px;">{{report.rptmessage}} 
+                                  <a style="cursor: pointer;" (click)="deleteReport(report.reportid,report.against)"><i  class="fa fa-trash-o change_color" aria-hidden="true"></i></a>
+                              </td>
+                          </tr>
+                      </table>
+                      </div>
+                      <div class="review-box">
+                          <a (click)="deleteAllReport(this.SelectedTenant.temail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                Delete All Reports</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+                      
+                  </div>
+                  
+
+              </ng-container>
+          </div>    
+            
+            </div>
+        </div>
+
+        <!-- This is Tenant Management Section. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option == 2" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Tenant Management Section</h4>
+            <hr class="w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>  
+
+          <div class="row justify-content-left mb-2">
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openTwoOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> List Of All Tenants</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openTwoOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Tenants</span>            
+          </div> 
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.TwoOf==1">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Tenant Name</td>
+                      <td>Tenant UserName</td>
+                      <td>Contact</td>
+                      <td>Address</td>
+                      <td>Properties</td>
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let tenant of tenantData" (click)="selectReviewerTenant(tenant.temail,12,2)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{tenant.tid}}</td>
+                      <td>{{tenant.tname}}</td>
+                      <td>{{tenant.temail}}</td>
+                      <td>{{tenant.tcontact}}</td>
+                      <td>{{tenant.taddress}}</td>
+                      <td><h6 (click)="getCartDetailsByTemail(tenant.temail)"> Cart Properties </h6></td>
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteTenantByTemail(tenant.temail)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+
+          <div style="width: 70%; margin-left: 20%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="TwoOf == 2">
+            <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #TenantForm="ngForm" (ngSubmit)="submitTenantForm()">             
+              <input style="height: fit-content;margin-left: 20px;" type="number" class="form-control" [(ngModel)]="tid" name="tid" placeholder="Id">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="tname" name="tname" placeholder="Name">
+              <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="temail" name="temail" placeholder="Email">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="tcontact" name="tcontact" placeholder="Contact">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="taddress" name="taddress" placeholder="Address">
+              <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_Tenants</button>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.TwoOf==2">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Tenant Name</td>
+                      <td>Tenant UserName</td>
+                      <td>Contact</td>
+                      <td>Address</td>
+                      <td>Properties</td>
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let tenant of tenantData" (click)="selectReviewerTenant(tenant.temail,12,2)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{tenant.tid}}</td>
+                      <td>{{tenant.tname}}</td>
+                      <td>{{tenant.temail}}</td>
+                      <td>{{tenant.tcontact}}</td>
+                      <td>{{tenant.taddress}}</td>
+                      <td><h6 (click)="getCartDetailsByTemail(tenant.temail)"> Cart Properties </h6></td>
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteTenantByTemail(tenant.temail)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+          
+
+        </div>
+
+         <!-- This is Carted Properties list Section. -->
+         <div class="col-md-10 scrollable-div" *ngIf="option == 21" [ngClass]="{'overflow-auto': isScrollable}">
+          <h6><a  class="link" style="margin-top: 10px;" (click)="openSection(this.backOption)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Carted Properties Details</h4>
+            <hr class="w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>  
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+                <tbody style="text-align:left">   
+                    <tr class="bg-gray" style="font-weight: bold;">
+                        <td >Id</td>
+                        <td>Property Name</td>
+                        <td>Owner UserName</td>
+                        <td>Property Type</td>
+                        <td>Property City</td>
+                        <td>Delete</td>                        
+                    </tr>                                             
+                    <tr *ngFor="let property of propertiesdata" (click)="selectPropertyById($event,property.basicDetailsId,11,2)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                        <td>{{property.basicDetailsId}}</td>
+                        <td>{{property.propertyName}}</td>
+                        <td>{{property.oemail}}</td>
+                        <td>{{property.subType}}</td>
+                        <td>{{property.city}}</td>
+                        <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="removeFromCart(property.basicDetailsId)"></i></td>                                                                                                                                          
+                    </tr>
+                </tbody>
+            </table>
+          </div>  
+        </div>
+
+          <!-- This is Owner Management Section. -->
+        <div class=" col-md-10 scrollable-div" [ngClass]="{'overflow-auto': isScrollable}"  *ngIf="option == 3">          
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Owner Management Section</h4>
+            <hr class=" w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>
+
+            <div class="row justify-content-left mb-2">
+              <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openThreeOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> List Of All Owners</span>
+              <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openThreeOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Owners</span>            
+            </div> 
+           
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.ThreeOf==1">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Owner Name</td>
+                      <td>Owner UserName</td>
+                      <td>Contact</td>
+                      <td>Address</td>
+                      <td>Properties</td>
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let owner of ownerData" (click)="selectOwnerByOwnerEmail(12,3,owner.oemail)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{owner.oid}}</td>
+                      <td>{{owner.oname}}</td>
+                      <td>{{owner.oemail}}</td>
+                      <td>{{owner.ocontact}}</td>
+                      <td>{{owner.oaddress}}</td>
+                      <td><h6 (click)="getAddedPropertyByOemail(owner.oemail)"> Added Properties </h6></td>
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteOwnerByTemail(owner.oemail)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+
+          <div style="width: 70%; margin-left: 20%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="ThreeOf == 2">
+            <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #OwnerForm="ngForm" (ngSubmit)="submitOwnerForm()">             
+              <input style="height: fit-content;margin-left: 20px;" type="number" class="form-control" [(ngModel)]="oid" name="tid" placeholder="Id">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="oname" name="tname" placeholder="Name">
+              <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="oemail" name="temail" placeholder="Email">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="ocontact" name="tcontact" placeholder="Contact">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="oaddress" name="taddress" placeholder="Address">
+              <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_Owners</button>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.ThreeOf==2">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Owner Name</td>
+                      <td>Owner UserName</td>
+                      <td>Contact</td>
+                      <td>Address</td>
+                      <td>Properties</td>
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let owner of ownerData" (click)="selectOwnerByOwnerEmail(12,3,owner.oemail)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{owner.oid}}</td>
+                      <td>{{owner.oname}}</td>
+                      <td>{{owner.oemail}}</td>
+                      <td>{{owner.ocontact}}</td>
+                      <td>{{owner.oaddress}}</td>
+                      <td><h6 (click)="getAddedPropertyByOemail(owner.oemail)"> Added Properties </h6></td>
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteOwnerByTemail(owner.oemail)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+
+        </div>
+
+        <!-- This is Owners Properties Section. -->
+        <div class=" col-md-10 scrollable-div" [ngClass]="{'overflow-auto': isScrollable}"  *ngIf="option == 31">
+          <h6><a  class="link" style="margin-top: 10px;" (click)="openSection(this.backOption)"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></h6>
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Owner's Properties Details</h4>
+            <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div> 
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+                <tbody style="text-align:left">   
+                    <tr class="bg-gray" style="font-weight: bold;">
+                        <td >Id</td>
+                        <td>Property Name</td>
+                        <td>Owner UserName</td>
+                        <td>Property Type</td>
+                        <td>Property City</td>
+                        <td>Delete</td>                        
+                    </tr>                                             
+                    <tr *ngFor="let property of propertiesdata" (click)="selectPropertyById($event,property.basicDetailsId,11,3)" class=" table-design" style="cursor: pointer;">                                                                                                 
+                        <td>{{property.basicDetailsId}}</td>
+                        <td>{{property.propertyName}}</td>
+                        <td>{{property.oemail}}</td>
+                        <td>{{property.subType}}</td>
+                        <td>{{property.city}}</td>
+                        <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deletePropertyById(property.basicDetailsId)"></i></td>                                                                                                                                          
+                    </tr>
+                </tbody>
+            </table>
+          </div>  
+
+
+        </div>
+
+        <!-- This is Report Management Section. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option == 4" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="heading text-center text-capitalize font-weight-bold py-5 ">
+            <h4 class="display-5  text-center">Report Management Section</h4>
+            <hr class="w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>     
+          
+          <div class="row justify-content-left mb-2">
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openFourOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> List Of All Report</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openFourOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Reports</span>            
+          </div> 
+
+          <div style="width: 70%; margin-left: 20%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="FourOf == 2">
+            <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #ReportForm="ngForm" (ngSubmit)="submitReportForm()">             
+              <input style="height: fit-content;margin-left: 20px;" type="number" class="form-control" [(ngModel)]="rid" name="tid" placeholder="Id">              
+              <input style="height: fit-content;margin-left: 20px;" type="date" class="form-control" [(ngModel)]="rdate" name="tcontact" placeholder="Date">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="reporter" name="tname" placeholder="Reporter">
+              <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="against" name="temail" placeholder="Against">
+              <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_Reports</button>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.FourOf==1 || FourOf == 2">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Reporter UserName</td>
+                      <td>Against UserName</td>
+                      <td>Date</td>
+                      <td>Message</td>                      
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let report of reportData" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{report.reportid}}</td>
+                      <td><h6 (click)="getTenantOrOwnerByEmail(report.reporter)">{{report.reporter}}</h6></td>
+                      <td><h6 (click)="getTenantOrOwnerByEmail(report.against)">{{report.against}}</h6></td>
+                      <td>{{report.date}}</td>
+                      <td>{{report.rptmessage}}</td>                     
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteReportById(report.reportid)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+          
+        </div>
+
+        <!-- This is Notification Center. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option==5" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Notification Center</h4>
+            <hr class=" w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div> 
+
+          <div class="row justify-content-left mb-2">
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openFiveOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> List Of All Notification</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openFiveOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Notification</span>            
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openFiveOfSubSection(3)"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Notification</span>            
+          </div> 
+
+          <div style="width: 70%; margin-left: 20%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="FiveOf == 2">
+            <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #NotificationForm="ngForm" (ngSubmit)="submitNotificationForm()">             
+              <input style="height: fit-content;margin-left: 20px;" type="number" class="form-control" [(ngModel)]="nid" name="tid" placeholder="Id">
+              <input style="height: fit-content;margin-left: 20px;" type="text" class="form-control" [(ngModel)]="from" name="tname" placeholder="From">
+              <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="to" name="temail" placeholder="To">
+              <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_Notification</button>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.FiveOf==1 || FiveOf == 2">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>From UserName</td>
+                      <td>To UserName</td>
+                      <td>Date</td>
+                      <td>Message</td>                      
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let notification of notificationData" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{notification.ntfid}}</td>
+                      <td><h6 (click)="getUserByEmail(notification.fromemail)">{{notification.fromemail}}</h6></td>
+                      <td><h6 (click)="getUserByEmail(notification.toemail)">{{notification.toemail}}</h6></td>
+                      <td>{{notification.date}}</td>
+                      <td>{{notification.message}}</td>                     
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteNotificationById(notification.ntfid)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div> 
+
+          <div class="justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="this.FiveOf==3">
+                    <!-- Search User Messanges -->
+                  <div>
+                    <div style="width: 70%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}">
+                      <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #MessangerForm="ngForm" (ngSubmit)="submitUserForm()">   
+                        <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="semail" name="memail" placeholder="User Email">
+                        <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_User</button>
+                      </form>
+                    </div>
+
+                    <div class="row">
+                          
+                      <div class="col-lg-6 col-sm-6">                           
+                        <table style="text-align:left; width:100%" class="inner-scrollable-div table table-striped" [ngClass]="{'overflow-auto': isScrollable}" >                                                   
+                            <tbody style="text-align:left">                                                
+                                <tr *ngFor="let messager of messangerRequest" class="table-design">  
+                                    
+                                    <td  *ngIf="messager.email === this.semail" style="width: 100%; margin: 0px; padding: 0px; padding-left: 10px; ">
+                                    <a class="row " style="cursor: pointer; width: 100%;" (click)="this.getUserNotifications()">                                           
+                                        <p>{{messager.name}}</p> 
+                                        <p style="margin-right: 20px; margin-left: 20px;">{{messager.email}} </p>
+                                        <p>{{messager.type}}</p>                                                                                           
+                                                                                                                                                                                
+                                    </a></td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        
+                        <div class="review-box" *ngIf="this.FiveOfFiveOf==1">
+                          <input style="border: none; border-bottom: 1px solid blueviolet; width: 100%;margin-top: 20px;" type="text " name="review" id="" [(ngModel)]="messageMsg" placeholder="Type Your Content">   
+                          <a (click)="addNotificationByAdmin(this.messageMsg,this.semail)">
+                            <p style="background-color: #f88d8d; color: white; text-align: center; margin-top: 10px; cursor: pointer;">
+                              <b class="change_colors" style="text-align: left">
+                                send Notification</b>
+                            </p></a>
+                          <hr
+                          class="w-100 mt-3"
+                          style="border-bottom: 2px solid #ff8c00; border-radius: 100%"
+                        />
+                        </div>
+
+                      </div>
+
+                      <div class="col-lg-6 col-sm-6" *ngIf="this.FiveOfFiveOf==1">
+                        <table style="text-align:left; width: 100%;" class=" table table-striped table-auto" >                                                   
+                          <tbody style="text-align:left">   
+                              <tr class="bg-gray" style="font-weight: bold;">
+                                                                 
+                                  <td>Message</td>                      
+                                  <td>Delete</td>                        
+                              </tr>                                             
+                              <tr *ngFor="let notification of notificationData" class=" table-design" style="cursor: pointer;">                                                                                                 
+                                 <td>{{notification.date}}</td>
+                                  <td>{{notification.message}}</td>                     
+                                  <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteNotificationById(notification.ntfid)"></i></td>                                                                                                                                          
+                              </tr>
+                          </tbody>
+                      </table>
+                      </div>
+
+                  
+                    </div>
+
+          </div>
+      </div>
+
+    </div>
+      
+        <!-- This is Massage Center. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option==6" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">Message Center</h4>
+            <hr class="w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div> 
+
+          <div class="row justify-content-left mb-2">
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openSixOfSubSection(1)"><i class="fa fa-list" aria-hidden="true"></i> All Users Messanges</span>
+            <span style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" (click)="openSixOfSubSection(2)"><i class="fa fa-search" aria-hidden="true"></i> Search Specific User Messages </span>                       
+          </div> 
+
+          <!-- All Users Messanges -->
+          <div *ngIf="this.SixOf==1" class="row">
+          <div class="col-lg-6 col-sm-6">                       
+            <table style="text-align:left; width:100%" class="inner-scrollable-div table table-striped table-auto" [ngClass]="{'overflow-auto': isScrollable}" >                                                   
+                <tbody style="text-align:left"> 
+                  <tr class="bg-gray" style="font-weight: bold;">
+                    <td>Sender</td>
+                    <td>Reciever</td>
+                  </tr>                                               
+                    <tr *ngFor="let messager of messanger" class=" table-design" style="cursor: pointer;" (click)="openChatting(messager[0],messager[1])">                          
+                        <td (click)="getUserforMessages(messager[0])">{{messager[0]}}</td>
+                        <td (click)="getUserforMessages(messager[1])">{{messager[1]}}</td>
+                    </tr>
+                </tbody>
+            </table>                                        
+        </div>
+        <!-- messages details  -->
+        <div *ngIf="this.messagerEmail !== ''" class="col-lg-6 col-sm-6" >
+          <h5>{{this.messagerEmail}} &nbsp;&nbsp; To &nbsp;&nbsp;{{this.toMessagerEmail}}</h5>          
+                     
+          <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+              <table style="width: 100%;">
+                  <ng-container *ngFor="let message of messageData; let i = index">
+                      <ng-container *ngIf="i === 0 || message.date !== messageData[i - 1].date;">
+                          <tr>
+                              <td colspan="2" style="text-align: center;">{{ message.date }}</td>
+                          </tr>
+                      </ng-container>
+                      <tr>
+                          <td *ngIf="this.messagerEmail === message.sender">{{ message.message }} <sub>{{ message.time }}</sub></td>
+                          <td *ngIf="this.messagerEmail !== message.sender" style="text-align: right;">{{ message.message }}<sub>{{ message.time }}</sub></td>
+                      </tr>
+                  </ng-container>
+              </table>
+          </div>                            
+                    
+          
+      </div>
+
+        </div>
+
+        <!-- Search User Messanges -->
+        <div *ngIf="this.SixOf==2">
+          <div style="width: 70%; margin-top: 0px;" class="d-flex justify-content-center inner-scrollable-div mb-5" [ngClass]="{'overflow-auto': isScrollable}" *ngIf="SixOf == 2">
+            <form style="margin: 0px; padding:0px;" class="d-flex justify-content-center" #MessangerForm="ngForm" (ngSubmit)="submitMessangerForm()">   
+              <input style="height: fit-content;margin-left: 20px;" type="email" class="form-control" [(ngModel)]="memail" name="memail" placeholder="User Email">
+              <button style="  cursor: pointer;padding: 5px; margin-left: 20px; border:1px solid #ececec; font-weight: 500;" class="table-design" type="submit">Search_Messages</button>
+            </form>
+          </div>
+
+          <div class="row">
+                
+            <div class="col-lg-6 col-sm-6">                           
+              <table style="text-align:left; width:100%" class="inner-scrollable-div table table-striped" [ngClass]="{'overflow-auto': isScrollable}" >                                                   
+                  <tbody style="text-align:left">                                                
+                      <tr *ngFor="let messager of messangerRequest" class="table-design">  
+                          
+                          <td  *ngIf="messager.email !== this.memail" style="width: 100%; margin: 0px; padding: 0px; padding-left: 10px; ">
+                          <a class="row " style="cursor: pointer; width: 100%;" (click)="openChatting(this.memail,messager.email)"> 
+                                
+                              <p  (click)="getUserforMessages(messager.email)">{{messager.name}}</p> 
+                              <p  (click)="getUserforMessages(messager.email)" style="margin-right: 20px; margin-left: 20px;">{{messager.email}} </p>
+                              <p>{{messager.type}}</p>                                                                                           
+                                                                                                                                                                       
+                          </a></td>
+                      </tr>
+                      </tbody>
+              </table>                                          
+          </div>
+
+           <!-- messages details  -->
+        <div *ngIf="this.messagerEmail !== '' && this.SixOfSixOF==1" class="col-lg-6 col-sm-6" >
+          <h5>{{this.messagerEmail}} &nbsp;&nbsp; To &nbsp;&nbsp;{{this.toMessagerEmail}}</h5>          
+                     
+          <div class="inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">  
+              <table style="width: 100%;">
+                  <ng-container *ngFor="let message of messageData; let i = index">
+                      <ng-container *ngIf="i === 0 || message.date !== messageData[i - 1].date;">
+                          <tr>
+                              <td colspan="2" style="text-align: center;">{{ message.date }}</td>
+                          </tr>
+                      </ng-container>
+                      <tr>
+                          <td *ngIf="this.messagerEmail === message.sender">{{ message.message }} <sub>{{ message.time }}</sub></td>
+                          <td *ngIf="this.messagerEmail !== message.sender" style="text-align: right;">{{ message.message }}<sub>{{ message.time }}</sub></td>
+                      </tr>
+                  </ng-container>
+              </table>
+          </div>                            
+                    
+          
+      </div>
+
+          </div>
+
+        </div>        
+
+        </div>        
+
+          <!-- This is Help & Support Section. -->
+        <div class="col-md-10 scrollable-div" *ngIf="option==7" [ngClass]="{'overflow-auto': isScrollable}">
+          <div class="heading text-center text-capitalize font-weight-bold py-5">
+            <h4 class="display-5  text-center">help & Support Section</h4>
+            <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+          </div>            
+
+          <div class="d-flex justify-content-center inner-scrollable-div" [ngClass]="{'overflow-auto': isScrollable}">
+            <table style="text-align:left; width: 80%;" class=" table table-striped table-auto" >                                                   
+              <tbody style="text-align:left">   
+                  <tr class="bg-gray" style="font-weight: bold;">
+                      <td >Id</td>
+                      <td>Name</td>
+                      <td>Email</td>
+                      <td>Category</td>
+                      <td>Message</td>                      
+                      <td>Delete</td>                        
+                  </tr>                                             
+                  <tr *ngFor="let contact of contactData" class=" table-design" style="cursor: pointer;">                                                                                                 
+                      <td>{{contact.coid}}</td>
+                      <td>{{contact.name}}</td>
+                      <td>{{contact.email}}</td>
+                      <td>{{contact.category}}</td>
+                      <td>{{contact.message}}</td>                     
+                      <td><i class="fa fa-trash change_color" aria-hidden="true" (click)="deleteContactById(contact.coid)"></i></td>                                                                                                                                          
+                  </tr>
+              </tbody>
+          </table>
+          </div>        
+        
+        </div>
+
+      </div>
+    </div>
+  </section>
+</body>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Sign up Form with Icons</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <style>
+        .page-title {
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body >
+
+<section class="page-title mt-4">
+    <!-- Container Start -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <!-- Title text -->
+                <h3>Create an account</h3>
+                <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="contact-us-content p-4">
+                    <h1 class="pt-3">Hello, Buyer/Tenant</h1>
+                    <p class="pt-3 pb-5">Please fill this form to create an account!</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <form [formGroup]="registerForm" (ngSubmit)="tenantRegister()">
+                    <fieldset class="p-4">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 py-2">
+                                    <input type="text" class="form-control" formControlName="tname"  placeholder= "Name *">
+                                    <div *ngIf="f['tname'].invalid && (f['tname'].dirty || f['tname'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tname'].errors?.['required']">Name is required</div>
+                                        <div *ngIf="f['tname'].errors?.['pattern']">Invalid name format</div>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pt-2">
+                                    <input type="email" class="form-control" formControlName="temail" (input)="onEmailInput($event)" placeholder="Email *">
+                                    <div *ngIf="f['temail'].invalid && (f['temail'].dirty || f['temail'].touched)" class="text-danger small">
+                                        <div *ngIf="f['temail'].errors?.['required']">Email is required</div>
+                                        <div *ngIf="f['temail'].errors?.['pattern']">Invalid email format</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 py-2">
+                                    <input type="text" class="form-control" formControlName="tcontact" placeholder="Contact *">
+                                    <div *ngIf="f['tcontact'].invalid && (f['tcontact'].dirty || f['tcontact'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tcontact'].errors?.['required']">Contact is required</div>
+                                        <div *ngIf="f['tcontact'].errors?.['pattern']">Invalid contact format (Should be 10 digits)</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pt-2">
+                                    <input type="text" class="form-control" formControlName="taddress" placeholder="Address *">
+                                    <div *ngIf="f['taddress'].invalid && (f['taddress'].dirty || f['taddress'].touched)" class="text-danger small">
+                                        <div *ngIf="f['taddress'].errors?.['required']">Address is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 py-2">
+                                    <select class="form-control" formControlName="tpassreq" placeholder="Security Question *">
+                                        <option value="" selected disabled>Select Question</option>
+                                        <option value="1">Favourite food item.</option>
+                                        <option value="2">Favourite Place</option>
+                                        <option value="3">Primary school</option>
+                                        <option value="4">Other</option>
+                                    </select>
+                                    <div *ngIf="f['tpassreq'].invalid && (f['tpassreq'].dirty || f['tpassreq'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tpassreq'].errors?.['required']">Please select a security question</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pt-2">
+                                    <input type="text" class="form-control" formControlName="tpassans" placeholder="Answer *">
+                                    <div *ngIf="f['tpassans'].invalid && (f['tpassans'].dirty || f['tpassans'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tpassans'].errors?.['required']">Answer is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 py-2">
+                                    <input type="password" class="form-control" formControlName="tpassword" placeholder="Password *">
+                                    <div *ngIf="f['tpassword'].invalid && (f['tpassword'].dirty || f['tpassword'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tpassword'].errors?.['required']">Password is required</div>
+                                        <div *ngIf="f['tpassword'].errors?.['pattern']">Password must contain at least 8 characters, including uppercase, lowercase, digit, and special character</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pt-2">
+                                    <input type="password" class="form-control" formControlName="tcpassword" placeholder="Confirm Password *">
+                                    <div *ngIf="f['tcpassword'].invalid && (f['tcpassword'].dirty || f['tcpassword'].touched)" class="text-danger small">
+                                        <div *ngIf="f['tcpassword'].errors?.['required']">Confirm Password is required</div>
+                                    </div>
+                                    <div *ngIf="f['tpassword'].value !== f['tcpassword'].value && (f['tcpassword'].dirty || f['tcpassword'].touched)" class="text-danger small">
+                                        Passwords do not match
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary float-right">Sign Up</button>
+                        </div>
+                        <div class="form-group" class="text-right">
+                            <label class="form-check-label"><a routerLink="../tenant-forgot">Forgot Password?</a></label><br>      
+                            <label class="form-check-label">Already have an account? <a routerLink="../tenant-login">Log in</a></label>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+
+
+ <h3 style="text-align:center"> Registered Property Owner Details </h3>
+ <hr class="mb-5 w-25 mt-3" style="border-top: 2px solid #FF8C00; border-radius: 100%;">
+	
+ <br>
+ <br>
+   <div class="center">
+     <table style="text-align:center" class="table table-striped">
+     <thead>
+  
+      <tr>
+        <th> Owner Id</th>
+        
+        
+        <th> Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Contact Number</th>
+        </tr>
+    </thead>
+    
+    
+    <tbody style="text-align:center">
+        <tr *ngFor="let Owner of owner">
+            <td>{{Owner. oid}}</td>
+          
+            
+            <td>{{Owner.oname}}</td>
+            <td>{{Owner.oemail}}</td>
+            <td>{{Owner.opassword}}</td>
+            <td>{{Owner.ocontact}}</td>
+          <!--<td><button class="btn btn-danger" (click)=""> Delete Owner</button></td>-->
+          <td><button class="btn btn-danger"  > Delete Owner</button></td>
+      
+        </tr>
+    </tbody>
+    </table>
+    </div>
+    <div class="container">
+      <span class="text-muted">All Rights Reserved 2024 @BrokerFree</span>
+  </div>
